@@ -28,6 +28,18 @@ public class FixedXor {
 		
 	}
 	
+	// ---- getXorOld -----------------------------------------------------------------------------
+
+	public String getXorOld() {
+		byte[] xored = new byte[firstValue.length];
+		
+		for(int i=0; i<firstValue.length; i++)
+			xored[i] = (byte)((int) firstValue[i] ^ (int) secondValue[i]);
+		
+		return hexFromByteArray_Old(xored);
+		
+	}
+	
 	// ---- byteFromHexString ---------------------------------------------------------------------
 	
 	private byte[] byteFromHexString(final String encoded) {
@@ -64,6 +76,17 @@ public class FixedXor {
 	        
 	    }
 	    return new String(hexChars);
+	}
+	
+	// ---- previous hex->pretty print ------------------------------------------------------------
+	
+	public String hexFromByteArray_Old(final byte[] bytes) {
+		StringBuilder sb = new StringBuilder();
+		
+		for(byte b : bytes)
+			sb.append(String.format("%02x", b));
+		
+		return sb.toString();
 	}
 
 }
