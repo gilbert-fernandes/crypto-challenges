@@ -26,11 +26,13 @@ public class XOREDstring {
 		
 		bestScoresByKey   = new int[256];
 		bestFreqPerLetter = new int[27];  // 26 letters + SPACE
+		
+		calculateScore();
 	}
 	
 	// ---- byteFromHexString ---------------------------------------------------------------------
 	
-	static byte[] byteFromHexString(final String encoded) {
+	private byte[] byteFromHexString(final String encoded) {
 	    if ((encoded.length() % 2) != 0)
 	        throw new IllegalArgumentException("input string has an odd number of characters");
 
@@ -119,7 +121,7 @@ public class XOREDstring {
 	 * 
 	 */
 
-	public void calculateScore() {
+	private void calculateScore() {
 		
 		for(int key=0; key<=255; key++) {
 			
@@ -310,19 +312,9 @@ public class XOREDstring {
 	public String getKeyScores() {
 		StringBuilder sb = new StringBuilder();
 		
-		for(int key=0; key <=255; key++) {
-			int freq = bestScoresByKey[key];
-			int stars = (freq * 64) / maxScore;
-			
-			sb.append(String.format("0x%02x : ", key));
-			
-			for(int j=0; j<= stars; j++) {
-				sb.append("*");
-			}
-			
-			sb.append("\n");
-			
-		}
+		for(int key=0; key <=255; key++) 		
+			sb.append(String.format("0x%02x : ", key)
+					+ (new String(new char[(bestScoresByKey[key] * 64) / maxScore]).replace("\0", "*")) + "\n");
 		
 		return sb.toString();
 	}
@@ -448,13 +440,10 @@ public class XOREDstring {
 		StringBuilder sb = new StringBuilder();
 		
 		for(frequencies cf : frequencies.values()) {
-			int charfreq = bestFreqPerLetter[frequencies.valueOf(cf.toString()).ordinal()];
-			sb.append(cf.toString() + "(" + charfreq + ") : ");
+			final int charfreq = bestFreqPerLetter[frequencies.valueOf(cf.toString()).ordinal()];
 			
-			for(int i=0; i<charfreq; i++)
-				sb.append("*");
-			
-			sb.append("\n");
+			sb.append(String.format("%5s", cf.toString()) + "(" + charfreq + ") : "
+					+ (new String(new char[charfreq]).replace("\0", "*")) + "\n");
 		}
 		
 		return sb.toString();

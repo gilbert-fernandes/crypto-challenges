@@ -18,8 +18,6 @@ public class decrypt_singlebyte_xor {
 			System.out.print("using letter frequency : ");
 			System.out.println(java.util.Arrays.asList(XOREDstring.frequencies.values()));
 			
-			x.calculateScore();
-			
 			System.out.println("\nhighest score found : " + x.getScore());
 			System.out.println(String.format("best key guess : 0x%x", x.getKey()));
 			
