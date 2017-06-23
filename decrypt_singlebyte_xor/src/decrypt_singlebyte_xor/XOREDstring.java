@@ -1,14 +1,11 @@
 package decrypt_singlebyte_xor;
 
-import java.io.UnsupportedEncodingException;
-import java.util.EnumMap;
-
 public class XOREDstring {
 	
 	private int bestScore;
 	private int bestKey;
+	private int maxScore;
 	
-	private final String hexString;
 	private final byte[] hexDecoded;
 	
 	private int[] bestScoresByKey;
@@ -23,12 +20,12 @@ public class XOREDstring {
 	public XOREDstring(final String s) {
 		bestScore = 0;
 		bestKey   = 0;
+		maxScore  = 0;
 		
-		hexString  = s;
 		hexDecoded = byteFromHexString(s);
 		
-		bestScoresByKey   = new int[254];
-		bestFreqPerLetter = new int[25];
+		bestScoresByKey   = new int[256];
+		bestFreqPerLetter = new int[27];  // 26 letters + SPACE
 	}
 	
 	// ---- byteFromHexString ---------------------------------------------------------------------
@@ -83,7 +80,7 @@ public class XOREDstring {
 	 * (score is reverse-position number counting from right to left)
 	 * 
 	 * Letter | Frequency | Score
-	 *  SPACE |     ?     |  27
+	 *  SPACE |     ?     |  27     (slightly higher than 12.702 but I don't have the value)
 	 *    E   |  12.702 % |  26
 	 *    A   |   8.167 % |  25
 	 *    R   |   5.987 % |  24
@@ -112,7 +109,7 @@ public class XOREDstring {
 	 *    Q   |   0.095 % |   1
 	 *    
 	 * Note : on my first attempt, I was not considering spaces but only letters A-Z.
-	 *        the decryption was not good. The Wikipedia page from character frequencies :
+	 *        the decryption failed. The Wikipedia page from character frequencies :
 	 *        https://en.wikipedia.org/wiki/Letter_frequency
 	 *        did not list the SPACE probability but said that :
 	 *        "In English, the space is slightly more frequent than the top letter (e)"  
@@ -126,8 +123,6 @@ public class XOREDstring {
 		
 		for(int key=0; key<=255; key++) {
 			
-			System.out.print("Key 0x" + String.format("%x", key));
-			
 			byte[] decodeAttempt = new byte[hexDecoded.length];
 			
 			for(int i=0; i<=hexDecoded.length-1; i++)
@@ -135,12 +130,15 @@ public class XOREDstring {
 			
 			int score = scoreValue(decodeAttempt);
 			
-			System.out.println(" has score " + score);
+			bestScoresByKey[key] = score;
 			
 			if(score > bestScore) {
 				bestScore = score;
 				bestKey = key;
 			}
+			
+			if(score > maxScore)
+				maxScore = score;
 		    
 		}
 	}
@@ -156,110 +154,137 @@ public class XOREDstring {
 			
 				case 32 :
 					score += frequencies.SPACE.ordinal();
+					break;
 				
 				case  65 :
 				case  97 :
 					score += frequencies.A.ordinal();
+					break;
 					
 				case  66 :
 				case  98 :
 					score += frequencies.B.ordinal();
+					break;
 					
 				case  67 :
 				case  99 :
 					score += frequencies.C.ordinal();
+					break;
 					
 				case  68 :
 				case 100 :
 					score += frequencies.D.ordinal();
+					break;
 					
 				case  69 :
 				case 101 :
 					score += frequencies.E.ordinal();
+					break;
 					
 				case  70 :
 				case 102 :
 					score += frequencies.F.ordinal();
+					break;
 					
 				case  71 :
 				case 103 :
 					score += frequencies.G.ordinal();
+					break;
 					
 				case  72 :
 				case 104 :
 					score += frequencies.H.ordinal();
+					break;
 					
 				case  73 :
 				case 105 :
 					score += frequencies.I.ordinal();
+					break;
 					
 				case  74 :
 				case 106 :
 					score += frequencies.J.ordinal();
+					break;
 					
 				case  75 :
 				case 107 :
 					score += frequencies.K.ordinal();
+					break;
 					
 				case  76 :
 				case 108 :
 					score += frequencies.L.ordinal();
+					break;
 					
 				case  77 :
 				case 109 :
 					score += frequencies.M.ordinal();
+					break;
 					
 				case  78 :
 				case 110 :
 					score += frequencies.N.ordinal();
+					break;
 					
 				case  79 :
 				case 111 :
 					score += frequencies.O.ordinal();
+					break;
 					
 				case  80 :
 				case 112 :
 					score += frequencies.P.ordinal();
+					break;
 					
 				case  81 :
 				case 113 :
 					score += frequencies.Q.ordinal();
+					break;
 					
 				case  82 :
 				case 114 :
 					score += frequencies.R.ordinal();
+					break;
 					
 				case  83 :
 				case 115 :
 					score += frequencies.S.ordinal();
+					break;
 					
 				case  84 :
 				case 116 :
 					score += frequencies.T.ordinal();
+					break;
 					
 				case  85 :
 				case 117 :
 					score += frequencies.U.ordinal();
+					break;
 					
 				case  86 :
 				case 118 :
 					score += frequencies.V.ordinal();
+					break;
 					
 				case  87 :
 				case 119 :
 					score += frequencies.W.ordinal();
+					break;
 					
 				case  88 :
 				case 120 :
 					score += frequencies.X.ordinal();
+					break;
 					
 				case  89 :
 				case 121 :
 					score += frequencies.Y.ordinal();
+					break;
 					
 				case  90 :
 				case 122 :
 					score += frequencies.Z.ordinal();
+					break;
 					
 			}
 		}
@@ -283,13 +308,157 @@ public class XOREDstring {
 	// ---- getKeyScores --------------------------------------------------------------------------
 
 	public String getKeyScores() {
-		return "<key scores here>";
+		StringBuilder sb = new StringBuilder();
+		
+		for(int key=0; key <=255; key++) {
+			int freq = bestScoresByKey[key];
+			int stars = (freq * 64) / maxScore;
+			
+			sb.append(String.format("0x%02x : ", key));
+			
+			for(int j=0; j<= stars; j++) {
+				sb.append("*");
+			}
+			
+			sb.append("\n");
+			
+		}
+		
+		return sb.toString();
 	}
 	
 	// ---- EnglishFrequency ----------------------------------------------------------------------
 
-	public String EnglishFrequency() {
-		return "<frequency here>";
+	public String EnglishFrequency(char[] decodedChars) {
+		
+		for(int i=0; i<decodedChars.length; i++) {
+			switch(Character.toUpperCase(decodedChars[i])) {
+			
+				case ' ' :
+					bestFreqPerLetter[frequencies.SPACE.ordinal()]++;
+					break;
+					
+				case 'A' :
+					bestFreqPerLetter[frequencies.A.ordinal()]++;
+					break;
+					
+				case 'B' :
+					bestFreqPerLetter[frequencies.B.ordinal()]++;
+					break;
+					
+				case 'C' :
+					bestFreqPerLetter[frequencies.C.ordinal()]++;
+					break;
+					
+				case 'D' :
+					bestFreqPerLetter[frequencies.D.ordinal()]++;
+					break;
+					
+				case 'E' :
+					bestFreqPerLetter[frequencies.E.ordinal()]++;
+					break;
+					
+				case 'F' :
+					bestFreqPerLetter[frequencies.F.ordinal()]++;
+					break;
+					
+				case 'G' :
+					bestFreqPerLetter[frequencies.G.ordinal()]++;
+					break;
+					
+				case 'H' :
+					bestFreqPerLetter[frequencies.H.ordinal()]++;
+					break;
+					
+				case 'I' :
+					bestFreqPerLetter[frequencies.I.ordinal()]++;
+					break;
+					
+				case 'J' :
+					bestFreqPerLetter[frequencies.J.ordinal()]++;
+					break;
+					
+				case 'K' :
+					bestFreqPerLetter[frequencies.K.ordinal()]++;
+					break;
+					
+				case 'L' :
+					bestFreqPerLetter[frequencies.L.ordinal()]++;
+					break;
+					
+				case 'M' :
+					bestFreqPerLetter[frequencies.M.ordinal()]++;
+					break;
+					
+				case 'N' :
+					bestFreqPerLetter[frequencies.N.ordinal()]++;
+					break;
+					
+				case 'O' :
+					bestFreqPerLetter[frequencies.O.ordinal()]++;
+					break;
+					
+				case 'P' :
+					bestFreqPerLetter[frequencies.P.ordinal()]++;
+					break;
+					
+				case 'Q' :
+					bestFreqPerLetter[frequencies.Q.ordinal()]++;
+					break;
+					
+				case 'R' :
+					bestFreqPerLetter[frequencies.R.ordinal()]++;
+					break;
+					
+				case 'S' :
+					bestFreqPerLetter[frequencies.S.ordinal()]++;
+					break;
+					
+				case 'T' :
+					bestFreqPerLetter[frequencies.T.ordinal()]++;
+					break;
+					
+				case 'U' :
+					bestFreqPerLetter[frequencies.U.ordinal()]++;
+					break;
+					
+				case 'V' :
+					bestFreqPerLetter[frequencies.V.ordinal()]++;
+					break;
+					
+				case 'W' :
+					bestFreqPerLetter[frequencies.W.ordinal()]++;
+					break;
+					
+				case 'X' :
+					bestFreqPerLetter[frequencies.X.ordinal()]++;
+					break;
+					
+				case 'Y' :
+					bestFreqPerLetter[frequencies.Y.ordinal()]++;
+					break;
+					
+				case 'Z' :
+					bestFreqPerLetter[frequencies.Z.ordinal()]++;
+					break;
+					
+			}
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		
+		for(frequencies cf : frequencies.values()) {
+			int charfreq = bestFreqPerLetter[frequencies.valueOf(cf.toString()).ordinal()];
+			sb.append(cf.toString() + "(" + charfreq + ") : ");
+			
+			for(int i=0; i<charfreq; i++)
+				sb.append("*");
+			
+			sb.append("\n");
+		}
+		
+		return sb.toString();
+		
 	}
 	
 	// ---- decrypt -------------------------------------------------------------------------------
