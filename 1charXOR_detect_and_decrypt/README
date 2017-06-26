@@ -3,5 +3,8 @@ finds which one of the 60-char strings in 4.txt file (327 lines) contains a 1-ch
 and outputs the best key found for the best line
 decryption of the encrypted line + character frequency
 
-uses about 1 ms per line to brute force all possible 1-char keys
-and output the good one at the end
+uses about 0,5 ms per line to brute force all possible 1-char keys
+and output the good one at the end on my machine(*)
+(150 to 200 ms for 327 lines)
+
+(*) Intel Core i5-3320M @ 2.6 GHz
