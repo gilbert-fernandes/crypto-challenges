@@ -1,3 +1,4 @@
+implementation of set 1 challenge 3
 Program can take 1 to n string (hex-encoded) as input
 Each string is checked for length and only those with an even number of chars are considered
 
