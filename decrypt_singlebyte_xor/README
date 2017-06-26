@@ -1,0 +1,23 @@
+Program can take 1 to n string (hex-encoded) as input
+Each string is checked for length and only those with an even number of chars are considered
+
+For each string :
+- hexencoded is removed and bytes are stored in a byte[]
+- decryption is attempted from 0x00 to 0xFF
+- on each decryption, character frequency analysis is done and scored
+- best score is kept : key shown + best decryption attempted
+
+frequency order for analysis is declared inside public enum frequencies in XOREDstring.java source
+order is from lowest (left) to maximum (right) frequency
+SPACE should usually be kept at the maximum and you play with letters frequency.
+
+Default program order is :
+Q, J, Z, X, V, K, W, Y, F, B, G, H, M, P, D, U, C, L, S, N, T, O, I, R, A, E, SPACE
+
+Score is ordinal value of the letter in the Enum
+Thus, if the enum contains 27 items, space has a value of 27, the letter before 26,
+and so on. So the lowest score for the lowest order frequency is 1, and it goes up
+to n (n being the number of items of the enum).
+
+Programs does decryption of the challenge with the input :
+1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736
