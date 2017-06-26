@@ -1,0 +1,7 @@
+implementation of set 1 challenge 4
+finds which one of the 60-char strings in 4.txt file (327 lines) contains a 1-char XOR encrypted line
+and outputs the best key found for the best line
+decryption of the encrypted line + character frequency
+
+uses about 1 ms per line to brute force all possible 1-char keys
+and output the good one at the end
