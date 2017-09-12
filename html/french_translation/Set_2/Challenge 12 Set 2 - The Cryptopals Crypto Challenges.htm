@@ -1,0 +1,160 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 12 Jeu 2 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2012%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2012%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2012%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2012%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2012%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/2">Jeu 2</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/2/challenges/12">Epreuve 12</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Déchiffrement ECB octet-par-octet (simple)</h3>
+          <p>
+          
+  Copiez votre fonction d'oracle afin d'en faire une nouvelle fonction,
+  capable de chiffrer des buffer en mode ECB en utilisant une clef
+  <i>constante</i> mais <i>inconnue</i> (une clef aléatoire et unique,
+  déclarée sous la forme d'une constante placée dans une variable globale).  
+</p>
+<p>
+  Ensuite, modifiez cette fonction afin qu'elle ajoute après le
+  texte clair AVANT DE PROCEDER AU CHIFFREMENT la chaîne de caractères
+  suivante :
+</p>
+<pre>Um9sbGluJyBpbiBteSA1LjAKV2l0aCBteSByYWctdG9wIGRvd24gc28gbXkg
+aGFpciBjYW4gYmxvdwpUaGUgZ2lybGllcyBvbiBzdGFuZGJ5IHdhdmluZyBq
+dXN0IHRvIHNheSBoaQpEaWQgeW91IHN0b3A/IE5vLCBJIGp1c3QgZHJvdmUg
+YnkK</pre>
+<div class="panel panel-danger">
+  <div class="panel-heading">
+    <h3 class="panel-title">Préservez l'intrigue !</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      N'essayez pas pour l'instant de déchiffrer ce qui se cache derrière cette
+      chaîne de caractères. Préservez la surprise.
+    </p>
+  </div>
+</div>
+<p>
+  Avant de rajouter cette chaîne de caractères au texte clair avant chiffrement,
+  il faudra la décoder car elle est en Base64. <i>Ne décodez pas cette chaîne
+  sous Base64 mais laissez votre code le faire</i>. Le but ici est que vous
+  ne devez pas être conscient(e) du contenu de la phrase.
+</p>
+<p>
+  Vous avez désormais une fonction qui produit :
+</p>
+<pre>AES-128-ECB(votre-texte-clair || chaîne-inconnue, clef-aléatoire)</pre>
+<p>
+  Comme vous allez le découvrir, vous pouvez déchiffrer la "chaîne-inconnue" avec des appels
+  répétés à votre fonction d'oracle.
+</p>
+<p>
+  Voici comment faire :
+</p>
+<style>
+  li { padding-top: 1em; }
+</style>
+<ol>
+  <li>
+    Alimentez des octets identiques de "votre-texte-clair" à votre fonction,
+    un octet à la fois. Commencez par 1 octet ("A") puis deux octets ("AA"),
+    puis trois octets ("AAA") et ainsi de suite. Vous devez dans un premier
+    temps déterminer la taille de bloc de chiffrement. Vous connaissez déjà
+    cette taille, mais vous devez faire comme si celle-ci vous était inconnue.  
+  </li>
+  <li>
+    Vous devez détecter que la fonction utilise le mode ECB. Vous le savez
+    déjà, mais vous devrez faire comme si cette information vous était
+    inconnue également.  
+  </li>
+  <li>
+    Connaissant la taille de bloc, élaborez un bloc en entrée auquel il va
+    manquer exactement 1 octet (par exemple, si la taille du bloc est de 8 octets,
+    utilisez "AAAAAAA"). Réfléchissez à ce que votre fonction d'oracle va
+    utiliser en tant qu'octet à la dernière position.
+  </li>
+  <li>
+    Réalisez un dictionnaire de toutes les possibilités en faisant varier
+    uniquement le dernier octet, et en alimentant votre oracle à l'aide
+    de ces chaînes de caractère. Par exemple on aura pour un bloc de 8 octets
+    les chaînes "AAAAAAAA" puis "AAAAAAAB" puis "AAAAAAAC", etc.
+    Vous devrez conserver le premier bloc de chaque invocation.  
+  </li>
+  <li>
+    Faites correspondre la sortie de chaque entrée à laquelle il manque un
+    octet à chacune des entrées de votre dictionnaire. Vous aurez ainsi
+    découvert le premier octet de la "chaîne-inconnue"
+  </li>
+  <li>
+    Maintenant, répétez pour l'octet suivant.  
+  </li>
+</ol>
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">Bravo !</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      Cette épreuve est la première où votre solution brise de la vraie cryptographie.
+      Beaucoup de personnes savent que lorsqu'on utilise le mode ECB, on peut voir
+      des pingouins au-travers. Mais peu sont capables de <i>déchiffrer le contenu de
+      ces textes chiffrés</i> mais vous en êtes capable. Si notre expérience peut
+      servir de guide, apprendre cette attaque vous rendra capable d'écrire du code
+      utilisable au sein de tests de sécurité dans l'année qui suivra.    
+    </p>
+  </div>
+</div>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

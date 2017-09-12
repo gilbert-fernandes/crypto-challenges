@@ -1,0 +1,121 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 16 Jeu 2 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2016%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2016%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2016%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2016%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2016%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/2">Jeu 2</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/2/challenges/16">Epreuve 16</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Attaque de CBC par inversion de bits</h3>
+          <p>
+  Générez une clef AES aléatoire.
+</p>
+<p>
+  Combinez votre code de remplissage et CBC pour écrire deux fonctions.
+</p>
+<p>
+  La première fonction doit prendre en entrée toute chaîne de caractères,
+  et insérer au début la chaîne :
+</p>
+<pre>"comment1=cooking%20MCs;userdata="</pre>
+<p>.. et ajouter à sa fin la chaîne :</p>
+<pre>";comment2=%20like%20a%20pound%20of%20bacon"</pre>
+<p>Votre fonction doit mettre entre guillemets les caractères ";" et "="
+</p>
+<p>
+  La fonction doit ensuite remplir la chaîne en entrée afin de former
+  un bloc AES de 16 octets de longueur, puis chiffrer ce dernier à l'aide
+  de la clef AES aléatoire.
+</p>
+<p>
+  La seconde fonction doit déchiffrer la chaîne de caractères, et rechercher
+  la sous-chaîne ";admin=true" (ou, de manière équivalente, déchiffer la
+  chaîne, découper celle-ci sur chaque caractère ";" puis convertir chaque
+  chaîne obtenue en deux tuples, et chercher le tuple "admin").
+</p>
+<p>Votre fonction doit renvoyer true/false selon que la chaîne est ou n'est
+pas présente.
+</p>
+<p>
+  Si vous avez écrit la première fonction correctement, il ne doit <i>pas</i>
+  être possible de fournir une chaîne de caractère qui produira la chaîne
+  de caractères qui est recherchée par la seconde fonction. Nous devrons
+  casser la partie chiffrée pour cela.
+</p>
+<p>
+  Il vous faut donc modifier le texte sous forme chiffrée (sans connaître la
+  clef AES) afin de le réaliser.
+</p>
+<p>
+  Vous allez exploiter le fait qu'en mode CBC, une erreur d'un bit au sein 
+  d'un texte chiffré :
+</p>
+<ul>
+  <li>Rend totalement illisible le bloc où l'erreur survient</li>
+  <li>Produit une erreur d'un bit identique dans le bloc chiffré qui suit</li>
+</ul>
+<div class="panel panel-warning">
+  <div class="panel-heading">
+    <h3 class="panel-title">Faites une pause et réfléchissez</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      Avant de réaliser l'implémentation de cette attaque, répondez à la question
+      suivante : pour quelle raison le mode CBC possède-t-il cette propriété ?
+    </p>
+  </div>
+</div>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

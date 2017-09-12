@@ -1,0 +1,89 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 14 Jeu 2 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2014%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2014%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2014%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2014%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2014%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/2">Jeu 2</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/2/challenges/14">Epreuve 14</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Déchiffrement ECB octet par octet (difficile)</h3>
+          <p>
+  Récupérez votre fonction d'oracle de l'exercice  
+  Take your oracle function
+  <a href="https://cryptopals.com/sets/2/challenges/12">#12.</a>
+  Générez une quantité aléatoire d'octets aléatoires, et insérez ces derniers au début
+  de chaque texte clair. Vous faites maintenant :  
+</p>
+<pre>AES-128-ECB(préfixe-aléatoire || contrôlé-par-attaqueur || octets-cible, clef-aléatoire)</pre>
+<p>
+  Même objectif : déchiffrez les octets-cible.
+</p>
+<div class="panel panel-warning">
+  <div class="panel-heading">
+    <h3 class="panel-title">Faites une pause et réfléchissez</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      Qu'est-ce qui est plus difficile ici que l'exercice #12 ? Comment pouvez-vous contourner
+      cet obstacle ? L'astuce est : utilisez tous les outils dont vous disposez déjà.
+      Vous n'avez pas besoin d'autre chose, ni de mathématiques complexes.
+    </p>
+    <p>
+      Pensez "STIMULUS" et "REPONSE".
+    </p>
+  </div>
+</div>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>
