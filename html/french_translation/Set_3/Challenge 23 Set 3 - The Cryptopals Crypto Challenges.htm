@@ -1,0 +1,112 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 23 Jeu 3 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2023%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2023%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2023%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2023%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2023%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/3">Jeu 3</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/3/challenges/23">Epreuve 23</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Cloner un générateur MT19937 en analysant sa sortie</h3>
+          <p>
+  L'état interne d'un générateur MT19937 se compose de 624 entiers de 32 bits.
+</p>
+<p>
+  Pour chaque ensemble de 624 sorties, le générateur permute son état interne.
+  Ces permutations régulières donnent au générateur pseudo-aléatoire MT19937
+  une période de 2 puissance 19937. Une période <b>énorme</b>.
+</p>
+<p>
+  A chaque fois qu'un générateur MT19937 est utilisé, un élement de son état
+  interne est soumis à une fonction d'altération qui diffuse des bits au
+  au sein du résultat.
+</p>
+<p>
+  Cette fonction d'altération est réversible; on peut écrire une fonction
+  "altération inverse" qui prend une sortie MT19937 et transforme la sortie
+  vers l'élément correspondant dans le tableau de valeurs stockant l'état
+  interne.
+</p>
+<p>
+  Pour inverser l'étape d'altération, on applique toutes les opérations
+  d'altération dans l'ordre inverse. Il existe deux types d'opération
+  au sein de la fonction d'altération, qui sont appliquées deux fois :
+  un XOR avec une valeur décalée à droite, et un XOR avec une valeur
+  décalée à gauche combinée par AND avec une valeur magique. Vous devez
+  écrire le code qui permet d'inverser les opérations "à droite" et
+  "à gauche".
+</p>
+<p>
+  Une fois que vous disposez de votre fonction "altération inverse",
+  créez un nouveau générateur MT19937, obtenez 624 sorties depuis
+  ce dernier, et appliquez votre fonction pour recréer l'état du
+  générateur et utilisez cet état pour mettre en fonction une
+  reproduction du générateur MT19937.
+</p>
+<p>
+  Ce générateur "dupliqué" doit être capable de prédire fidélement
+  les valeurs du générateur original. 
+</p>
+<div class="panel panel-warning">
+  <div class="panel-heading">
+    <h3 class="panel-title">Faites une pause et réfléchissez</h3>
+  </div>
+  <div class="panel-body">
+    Comment pouvez-vous modifier MT19937 pour rendre cette attaque
+    difficile ? Que se passerait-il si vous appliquez à chaque
+    sortie altérée un hachage à sens unique cryptographique ?  
+  </div>
+</div>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

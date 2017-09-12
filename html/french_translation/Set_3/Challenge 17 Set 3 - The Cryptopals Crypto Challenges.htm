@@ -1,0 +1,148 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 17 Jeu 3 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2017%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2017%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2017%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2017%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2017%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/3">Jeu 3</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/3/challenges/17">Epreuve 17</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Oracle CBC à remplissage</h3>
+          <p>
+  Cette attaque est la plus connue en cryptographie moderne à chiffrement par blocs.
+</p>
+<p>
+  Combinez votre code de remplissage et CBC pour écrire deux fonctions.
+</p>
+<p>
+  La première fonction doit sélectionner aléatoirement l'une des 10 chaînes
+  suivantes :
+</p>
+<pre>MDAwMDAwTm93IHRoYXQgdGhlIHBhcnR5IGlzIGp1bXBpbmc=
+MDAwMDAxV2l0aCB0aGUgYmFzcyBraWNrZWQgaW4gYW5kIHRoZSBWZWdhJ3MgYXJlIHB1bXBpbic=
+MDAwMDAyUXVpY2sgdG8gdGhlIHBvaW50LCB0byB0aGUgcG9pbnQsIG5vIGZha2luZw==
+MDAwMDAzQ29va2luZyBNQydzIGxpa2UgYSBwb3VuZCBvZiBiYWNvbg==
+MDAwMDA0QnVybmluZyAnZW0sIGlmIHlvdSBhaW4ndCBxdWljayBhbmQgbmltYmxl
+MDAwMDA1SSBnbyBjcmF6eSB3aGVuIEkgaGVhciBhIGN5bWJhbA==
+MDAwMDA2QW5kIGEgaGlnaCBoYXQgd2l0aCBhIHNvdXBlZCB1cCB0ZW1wbw==
+MDAwMDA3SSdtIG9uIGEgcm9sbCwgaXQncyB0aW1lIHRvIGdvIHNvbG8=
+MDAwMDA4b2xsaW4nIGluIG15IGZpdmUgcG9pbnQgb2g=
+MDAwMDA5aXRoIG15IHJhZy10b3AgZG93biBzbyBteSBoYWlyIGNhbiBibG93</pre>
+<p>
+  ... puis générer une clef AES aléatoire (qui doit être sauvegardée
+  pour tous les chiffrements qui vont suivre). Remplissez la chaîne
+  afin de lui faire atteindre la taille d'un bloc AES de 16 octets,
+  et chiffrez en mode CBC la chaîne avec la clef aléatoire, en
+  fournissant à la fonction le texte chiffré et IV.
+</p>
+<p>
+  La seconde fonction doit consommer le texte chiffré produit par la
+  première fonction, réaliser le déchiffrement, vérifier le
+  remplissage et renvoyer true/false selon que ce dernier est
+  valide, ou pas.
+</p>
+<div class="panel panel-warning">
+  <div class="panel-heading">
+    <h3 class="panel-title">Ce que vous réalisez ici</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      Cette paire de fonctions permet d'approcher le chiffrement AES-CBC
+      tel qu'il est implémenté au sein des serveurs d'application Web
+      existants. La seconde fonction modèle la manière qu'ont les serveurs
+      de consommer les jetons de session chiffrés, comme s'il s'agissait
+      de cookies.
+    </p>
+  </div>
+</div>
+<p>
+  Il s'avère qu'il est possible de déchiffrer les textes chiffrés fournis
+  par la première fonction.
+</p>
+<p>
+  Le déchiffrement ici dépend d'une fuite par canal auxiliaire (side-channel)
+  provenant de la fonction de déchiffrement. Cette fuite est le message d'erreur
+  que l'on obtient et qui permet de savoir si le remplissage est valide, ou pas.
+</p>
+<p>
+  Il existe des centaines de pages qui expliquent comment cette attaque
+  fonctionne, donc je ne vais pas l'expliquer ici. Toutefois, je dois
+  vous dire ceci :
+</p>
+<p>
+  La clef fondamentale sur laquelle repose cette attaque est que l'octet 01h
+  est un remplissage valide, et qu'il survient 1 fois sur 256 au sein des
+  textes clairs "aléatoires" produits par le déchiffrement d'un texte
+  chiffré qui a été altéré.
+</p>
+<p>02h de manière isolée n'est <i>pas</i> un remplissage valide.</p>
+<p>
+  02h 02h <i>est</i> un remplissage valide, mais ne surviendra que rarement
+  par rapport à 01h.
+</p>
+<p>03h 03h 03h est encore moins probable.</p>
+<p>
+  Si vous altérez un chiffrement ET que le remplissage est valide
+  alors vous savez que l'octet de remplissage est valide.
+</p>
+<p>
+  Il est facile de trébucher sur le faire que les textes chiffrés CBC font
+  l'objet de "remplissage". <i>Les oracles à remplissage n'ont rien à voir avec
+  le remplissage utilisé dans un texte clair sous CBC.</i> Cette attaque
+  cible une partie spécifique de code qui gère le déchiffrement.
+  Vous pouvez programmer un oracle à remplissage contre <i>tout bloc CBC</i>
+  qu'il fasse l'objet d'un remplissage, ou pas.
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

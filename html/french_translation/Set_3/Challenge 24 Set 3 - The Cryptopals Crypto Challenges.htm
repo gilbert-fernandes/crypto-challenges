@@ -1,0 +1,94 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 24 Jeu 3 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2024%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2024%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2024%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2024%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2024%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/3">Jeu 3</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/3/challenges/24">Epreuve 24</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Créez un chiffrement de flux MT19937 puis brisez-le</h3>
+          <p>
+  Vous pouvez créer un chiffrement de flux facilement à partir
+  de n'importe quel générateur pseudo aléatoire. Utilisez-le pour
+  générer une séquence de sorties de 8-bits et considérez ces sorties
+  comme un keystream. Puis faites un XOR de chaque octet du texte clair
+  avec chaque octet successif du keystream.
+</p>
+<p>
+  Ecrivez une fonction qui implémente ce concept en utilisant un générateur
+  MT19937 et une racine de 16-bits. Vérifiez que vous pouvez chiffrer et
+  déchiffrer correctement. Ce code sera assez similaire au code utilisé
+  pour le CTR.
+</p>
+<p>
+  Utilisez votre fonction pour chiffrer un texte clair connu (par exemple,
+  14 lettres "A" consécutives) préfixé par un nombre aléatoire de caractères
+  aléatoires.
+</p>
+<p>
+  Depuis le texte chiffré, retrouvez la "clef" (la racine de 16-bits).
+</p>
+<p>
+  Utilisez la même idée pour générer un mécanisme de remise à zéro
+  de mot de passe, reposant sur un générateur MT19937 dont la racine
+  est l'heure actuelle.
+</p>
+<p>
+  Ecrivez une fonction qui permet de tester si un jeton "mot de passe"
+  est le produit d'un générateur MT19937 dont la racine a été alimentée
+  par l'heure actuelle.
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

@@ -1,0 +1,85 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 22 Jeu 3 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2022%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2022%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2022%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2022%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2022%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/3">Jeu 3</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/3/challenges/22">Epreuve 22</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Briser une racine MT19937</h3>
+          <p>
+  Assurez-vous que votre implémentation de MT19937 accepte une valeur racine entière
+  d'initialisation. Testez-la : vérifiez que vous obtenez la même séquence en sortie
+  pour une racine donnée.
+</p>
+<p>
+  Ecrivez une routine qui produit l'opération suivante :
+</p>
+<ul>
+  <li>Attendre un nombre de secondes aléatoires, entre 40 et 1000</li>
+  <li>Donnez comme racine au générateur l'horodatage Unix actuel</li>
+  <li>Attendre un nombre de secondes aléatoire de nouveau</li>
+  <li>Renvoyer les premiers 32 octets obtenus depuis le générateur</li>
+</ul>
+<p>
+  Vous comprenez que cela va prendre un peu de temps; Préparez-vous
+  un café. Ou bien simulez le passage du temps, mais vous allez passer
+  à côté de la partie amusante dans ce cas.
+</p>
+<p>
+  A partir de la sortie pseudo-aléatoire obtenue, retrouvez la racine utilisée.
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

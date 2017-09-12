@@ -1,0 +1,143 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 19 Jeu 3 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2019%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2019%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2019%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2019%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2019%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/3">Jeu 3</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/3/challenges/19">Epreuve 19</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Briser le mode CTR à nonce fixée par substitution</h3>
+          <p>
+  Prenez votre fonction CTR de chiffrement/déchiffrement et fixez sa valeur de nonce
+  à la valeur 0. Puis générez une clef AES aléatoire.
+</p>
+<p>
+  En réalisant des <i>chiffrements successifs</i> (et <i>pas</i> en faisant fonctionner
+  un unique et massif flux CTR) chiffrez chaque ligne des chaînes suivantes, après
+  avoir décodé leur contenu qui est en Base64, afin de produire des textes chiffrés
+  indépendants :
+</p>
+<pre>SSBoYXZlIG1ldCB0aGVtIGF0IGNsb3NlIG9mIGRheQ==
+Q29taW5nIHdpdGggdml2aWQgZmFjZXM=
+RnJvbSBjb3VudGVyIG9yIGRlc2sgYW1vbmcgZ3JleQ==
+RWlnaHRlZW50aC1jZW50dXJ5IGhvdXNlcy4=
+SSBoYXZlIHBhc3NlZCB3aXRoIGEgbm9kIG9mIHRoZSBoZWFk
+T3IgcG9saXRlIG1lYW5pbmdsZXNzIHdvcmRzLA==
+T3IgaGF2ZSBsaW5nZXJlZCBhd2hpbGUgYW5kIHNhaWQ=
+UG9saXRlIG1lYW5pbmdsZXNzIHdvcmRzLA==
+QW5kIHRob3VnaHQgYmVmb3JlIEkgaGFkIGRvbmU=
+T2YgYSBtb2NraW5nIHRhbGUgb3IgYSBnaWJl
+VG8gcGxlYXNlIGEgY29tcGFuaW9u
+QXJvdW5kIHRoZSBmaXJlIGF0IHRoZSBjbHViLA==
+QmVpbmcgY2VydGFpbiB0aGF0IHRoZXkgYW5kIEk=
+QnV0IGxpdmVkIHdoZXJlIG1vdGxleSBpcyB3b3JuOg==
+QWxsIGNoYW5nZWQsIGNoYW5nZWQgdXR0ZXJseTo=
+QSB0ZXJyaWJsZSBiZWF1dHkgaXMgYm9ybi4=
+VGhhdCB3b21hbidzIGRheXMgd2VyZSBzcGVudA==
+SW4gaWdub3JhbnQgZ29vZCB3aWxsLA==
+SGVyIG5pZ2h0cyBpbiBhcmd1bWVudA==
+VW50aWwgaGVyIHZvaWNlIGdyZXcgc2hyaWxsLg==
+V2hhdCB2b2ljZSBtb3JlIHN3ZWV0IHRoYW4gaGVycw==
+V2hlbiB5b3VuZyBhbmQgYmVhdXRpZnVsLA==
+U2hlIHJvZGUgdG8gaGFycmllcnM/
+VGhpcyBtYW4gaGFkIGtlcHQgYSBzY2hvb2w=
+QW5kIHJvZGUgb3VyIHdpbmdlZCBob3JzZS4=
+VGhpcyBvdGhlciBoaXMgaGVscGVyIGFuZCBmcmllbmQ=
+V2FzIGNvbWluZyBpbnRvIGhpcyBmb3JjZTs=
+SGUgbWlnaHQgaGF2ZSB3b24gZmFtZSBpbiB0aGUgZW5kLA==
+U28gc2Vuc2l0aXZlIGhpcyBuYXR1cmUgc2VlbWVkLA==
+U28gZGFyaW5nIGFuZCBzd2VldCBoaXMgdGhvdWdodC4=
+VGhpcyBvdGhlciBtYW4gSSBoYWQgZHJlYW1lZA==
+QSBkcnVua2VuLCB2YWluLWdsb3Jpb3VzIGxvdXQu
+SGUgaGFkIGRvbmUgbW9zdCBiaXR0ZXIgd3Jvbmc=
+VG8gc29tZSB3aG8gYXJlIG5lYXIgbXkgaGVhcnQs
+WWV0IEkgbnVtYmVyIGhpbSBpbiB0aGUgc29uZzs=
+SGUsIHRvbywgaGFzIHJlc2lnbmVkIGhpcyBwYXJ0
+SW4gdGhlIGNhc3VhbCBjb21lZHk7
+SGUsIHRvbywgaGFzIGJlZW4gY2hhbmdlZCBpbiBoaXMgdHVybiw=
+VHJhbnNmb3JtZWQgdXR0ZXJseTo=
+QSB0ZXJyaWJsZSBiZWF1dHkgaXMgYm9ybi4=</pre>
+<p>(Ceci doit produire 40 textes chiffrés courts en mode CTR).</p>
+<p>
+  Parce que le nonce CTR (souvent appellé "sel") n'est pas aléatoire
+  pour chaque chiffrement, chaque texte chiffré l'a été avec le même
+  keystream. C'est une très mauvaise chose.
+</p>
+<p>
+  Une fois assimilé, comme la plupart des chiffrements par flux
+  (incluant le RC4 et bien entendu tout chiffrement que l'on fait
+  fonctionner en mode CTR) le "chiffrement" d'un octet de données
+  revient à une simple opération XOR, et il est clair que :
+</p>
+<pre>OCTET-TEXTE-CHIFFRE XOR OCTET-TEXTE-CLAIR = OCTET-KEYSTREAM</pre>
+<p>Et puisque le keystream est le même pour chaque texte que nous avons chiffré :</p>
+<pre>OCTET-TEXTE-CHIFFRE XOR OCTET-KEYSTREAM = OCTET-TEXTE-CLAIR (ie, "trop facile !")</pre>
+<p>
+  Attaquez ce délicieux système cryptographique : devinez les lettres, utilisez
+  les fréquences des lettres en langue anglaise pour confirmer vos estimations,
+  trouvez les trigrammes les plus fréquents utilisés en anglais, etc.
+</p>
+<div class="panel panel-warning">
+  <div class="panel-heading">
+    <h3 class="panel-title">Ne rendez-pas les choses plus complexes que requis</h3>
+  </div>
+  <div class="panel-body">
+    Vous pouvez vous attribuer des points supplémentaires si vous pouvez automatiser
+    votre attaque, mais la raison pour laquelle je vous fait réaliser tout cela
+    manuellement est précisemment qu'il s'agit d'une approche sous-optimale.
+  </div>
+</div>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

@@ -1,0 +1,122 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 18 Jeu 3 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2018%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2018%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2018%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2018%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2018%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/3">Jeu 3</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/3/challenges/18">Epreuve 18</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Implémenter CTR, le chiffrement de flux</h3>
+          <p>La chaîne :</p>
+<pre>L77na/nrFsKvynd6HzOoG7GHTLXsTVu9qvY/2syLXzhPweyyMTJULu/6/kXX0KSvoOLSFQ==</pre>
+<p>
+  ... se déchiffre vers un texte approximativement anglais en mode CTR, ce qui
+  correspond à un chiffrement par bloc AES qui transforme l'AES en chiffrement
+  de flux, avec les paramètres suivants :
+</p>
+<pre>       clef=YELLOW SUBMARINE
+      nonce=0
+      format=nonce 64 bit non-signé (unsigned) little endian,
+             nombre de blocs 64 bit little endian (nombre d'octets / 16)</pre>
+<p>Le mode CTR est très simple.</p>
+<p>
+  Au lieu de chiffrer le texte clair, le mode CTR chiffre un compteur
+  qui s'incrémente, et produit un bloc de 16 octets qui sert de clef,
+  avec lequel on réalise un XOR sur le texte clair.  
+</p>
+<p>
+  Par exemple, les 16 premiers octets d'un message ayant pour paramètres :
+</p>
+<pre>keystream = AES("YELLOW SUBMARINE",
+                "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00")</pre>
+<p>
+  ... puis les 16 octets suivants :
+</p>
+<pre>keystream = AES("YELLOW SUBMARINE",
+                "\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00")</pre>
+<p>
+  ... puis :
+</p>
+<pre>keystream = AES("YELLOW SUBMARINE",
+                "\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00")</pre>
+<p>
+  Le mode CTR n'a pas besoin de remplissage; quand on est à court de texte clair,
+  on cesse le XOR avec le keystream et on cesse la production de ce dernier.
+</p>
+<p>
+  Le déchiffrement est identique au chiffrement. On génère le même keystream, et on
+  applique le XOR pour récupérer le texte clair.
+</p>
+<p>
+  Decrypt the string at the top of this function, then use your CTR
+  function to encrypt and decrypt other things.
+</p>
+<div class="panel panel-warning">
+  <div class="panel-heading">
+    <h3 class="panel-title">Ce chiffrement par bloc est le seul qui compte pour du bon code</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      La cryptographie moderne repose principalement sur le mode CTR pour adapter les
+      chiffres par bloc afin d'en faire des chiffres de flux, car nous avons plus souvent
+      besoin de chiffrer des flux de données que des séquences de blocs. Daniel Bernstein
+      a indiqué à Phil Rogaway sur le ton de la plaisanterie que les bons systèmes
+      cryptographiques n'ont pas besoin de transormations de "déchiffrement". Les constructions
+      comme le CTR sont ce dont il s'agit.
+    </p>
+  </div>
+</div>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

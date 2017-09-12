@@ -1,0 +1,89 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 20 Jeu 3 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2020%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2020%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2020%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2020%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2020%20Set%203%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/3">Jeu 3</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/3/challenges/20">Epreuve 20</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Briser le CTR à nonce-fixée statistiquement</h3>
+          <p>
+  <a href="https://cryptopals.com/static/challenge-data/20.txt">Dans ce fichier</a>
+  on trouve un ensemble similaires de texte encodés en Base64. On va faire avec
+  eux la même chose que la dernière fois, mais le problème va être résolu
+  de manière différente. 
+</p>
+<p>
+  Au lieu de faire des estimations à tatons pour trouver le bon texte clair,
+  on va traiter la collection de textes chiffrés de la même manière qu'un XOR
+  à répétition de clef.
+</p>
+<p>
+  Au premier abord, un chiffrement CTR peut sembler différent d'un XOR à
+  répétition de clef, mais <i>si le nonce (sel) est fixé, en réalité
+  c'est la même chose</i>.
+</p>
+<p>
+  Pour l'exploiter: prenez votre collection de textes chiffrés, et tronquez-les
+  à une longueur identique (utiliser la taille du texte chiffré le plus court
+  par exemple).
+</p>
+<p>
+  Résolvez la concaténation des textes chiffrés obtenue comme s'il s'agissait
+  d'un XOR à répétition de clef, en utilisant une taille de clef égale à
+  la longueur du texte chiffré XORé.
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>
