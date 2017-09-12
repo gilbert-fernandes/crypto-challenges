@@ -1,0 +1,78 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 7 Jeu 1 - Epreuves cryptographiques Cryptopals</title>
+    <link href="Challenge%207%20Set%201%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%207%20Set%201%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%207%20Set%201%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%207%20Set%201%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/1">Jeu 1</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/1/challenges/7">Epreuve 7</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>AES en mode ECB</h3>
+          <p>
+  Le contenu au format Base64 contenu
+  <a href="https://cryptopals.com/static/challenge-data/7.txt">dans ce fichier</a>
+  a été chiffré sous AES-128 à l'aide de la clef :  
+</p>
+<pre>"YELLOW SUBMARINE".</pre>
+<p>
+  (la clef est en majuscules, sans les guillemets, et comporte exactement 16 caractères.
+  J'aime "YELLOW SUBMARINE" parce que cette clef fait exactement 16 octets, et maintenez vous l'aimez aussi)
+</p>
+<p>
+  Déchiffrez le message. Vous connaissez la clef, après tout.  
+</p>
+<p>
+  Méthode la plus facile: utilisez OpenSSL::Cipher et donnez-lui AES-128-ECB comme chiffre.
+</p>
+<div class="panel panel-warning">
+  <div class="panel-heading">
+    <h3 class="panel-title">Faites-le avec du code</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      Vous pouvez évidemment déchiffrer le fichier à l'aide de l'outil en ligne de commande OpenSSL.
+      Mais vous devez programmer le déchiffrement ECB pour une raison. Vous en aurez <i>énormément</i>
+      besoin par la suite, et pas seulement pour attaquer ECB.      
+    </p>
+  </div>
+</div>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+</body></html>

@@ -1,0 +1,143 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 6 Jeu 1 - Epreuves cryptographiques Cryptopals</title>
+    <link href="Challenge%206%20Set%201%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%206%20Set%201%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%206%20Set%201%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%206%20Set%201%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/1">Jeu 1</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/1/challenges/6">Epreuve 6</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Briser un XOR à répétition de clef</h3>
+          <style>
+  li { 
+    padding-top: 1em;
+  }
+</style>
+<div class="panel panel-danger">
+  <div class="panel-heading">
+    <h3 class="panel-title">Les choses sérieuses débutent, désormais.</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      Cette épreuve n'est pas difficile conceptuellement, mais elle implique de
+      programmer à une étape où les erreurs sont fréquentes. Les épreuves jusqu'à
+      présent n'ont servi qu'à vous mettre à niveau. Cette épreuve est une
+      épreuve <b>éliminatoire</b>. Si vous y parvenez, vous devriez être capable d'aller
+      jusqu'au jeu 6.
+    </p>
+  </div>
+</div>
+<p>
+  <a href="https://cryptopals.com/static/challenge-data/6.txt">Ici se trouve un fichier.</a>
+  Il a été chiffré à l'aide d'un XOR à répétition de clef.
+</p>
+<p>
+  Déchiffez ce fichier.
+</p>
+<p>
+  Voici comment :
+</p>
+<ol>
+  <li>
+    Soit KEYSIZE la longueur estimée de la clef; essayez les valeurs de 2 à 40 (environ).
+  </li>
+  <li>
+    Ecrivez une fonction qui calcule la distance d'édition/de Hamming entre deux chaînes
+    de caractères. <i>La distance de Hamming est le nombre de bits qui diffèrent</i> entre les deux chaînes.
+    La distance entre
+    
+    <pre>this is a test</pre>
+    et
+    <pre>wokka wokka!!!</pre>
+    est de <b>37.</b>
+    <i>Appliquez votre code à cet exemple avant d'aller plus loin.</i>
+  </li>
+  <li>
+    Pour chaque KEYSIZE, prenez les <i>premiers</i> KEYSIZE octets, puis une <i>seconde</i>
+    série de KEYSIZE octets et déterminez la distance de Humming qui les sépare.
+    Normalisez le résultat en le divisant par KEYSIZE.
+  </li>
+  <li>
+    Le KEYSIZE ayant la distance d'édition normalisée la plus petite est probablement la clef.
+    Vous pouvez par exemple tenter de déchiffrer à l'aide de 2 ou 3 KEYSIZE les plus petits,
+    et si cela ne fonctionne pas essayer avec des blocs de 4 KEYSIZE et faire la moyenne
+    des distances.
+  </li>
+  <li>
+    Maintenant que vous connaissez KEYSIZE: découpez le texte chiffré en blocs de taille
+    multiple de KEYSIZE.
+  </li>
+  <li>
+    Puis transposez les blocs : créez un bloc contenant le premier octet de chaque bloc.
+    Puis un second bloc contenant les seconds octets de chaque bloc, et ainsi de suite.  
+  </li>
+  <li>
+    Traitez ensuite chaque bloc comme étant chiffré par un XOR à caractère unique.
+    Vous avez déjà du code pour le faire.  
+  </li>
+  <li>
+    Pour chaque bloc, l'octet unique utilisé comme clef pour le XOR produisant
+    l'histogramme au meilleur aspect sera considéré comme l'octet de clef pour
+    ce bloc. Rassemblez tous ces octets de clef pour obtenir la clef au complet.  
+  </li>
+</ol>
+<p>
+  Ce code va être extrêmement utile pour la suite des choses. Briser des chiffres
+  par XOR à répétition de clef (dits de "Vigenère") de manière statistique n'est
+  aujourd'hui qu'un exercice académique, le "B, A, BA" de la cryptographie.
+  Mais, il existe plus de personnes qui "savent comment on fait" que de personnes
+  <i>réellement capables de les briser</i>, et une technique similaire va permettre
+  de briser quelque chose de bien plus important. 
+</p>
+<div class="panel panel-warning">
+  <div class="panel-heading">
+    <h3 class="panel-title">Non, ce n'est pas une erreur.</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      Cette épreuve est celle pour laquelle nous recevons le plus de demande d'aide.
+      Nous pouvons vous confirmer qu'il n'y a ici aucune erreur. En particulier, la distance
+      d'édition avec "wokka wokka!!!" est réellement 37.
+    </p>
+  </div>
+</div>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+</body></html>

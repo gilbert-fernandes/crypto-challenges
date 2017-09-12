@@ -1,0 +1,74 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 5 Jeu 1 - Epreuves cryptographiques Cryptopals</title>
+    <link href="Challenge%205%20Set%201%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%205%20Set%201%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%205%20Set%201%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%205%20Set%201%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/1">Jeu 1</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/1/challenges/5">Epreuve 5</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Implémenter un XOR à répétition de clef</h3>
+          <p>
+  Voici le début d'un vers en ouverture d'une oeuvre majeure en langue anglaise :
+</p>
+<pre>Burning 'em, if you ain't quick and nimble
+I go crazy when I hear a cymbal</pre>
+<p>
+  Chiffrez ces vers à l'aide de la clef "ICE" au-travers d'un XOR à répétition de clef.
+</p>
+<p>
+  Dans un XOR à répétition de clef, vous appliquez de manière séquentielle chaque octet de la clef au
+  texte clair.
+  Le premier octet du texte a chiffrer subit un XOR avec I, le second octet un XOR avec C,
+  le troisième octet un XOR avec E, et on continue en reprenant depuis I de "ICE".
+</p>
+<p>
+  Vous devrez obtenir le résultat suivant :
+</p>
+<pre>0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272
+a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f</pre>
+<p>
+  Chiffrez ensuite différentes choses à l'aide de cette nouvelle fonction XOR. Chiffrez vos emails.
+  Votre fichier contenant vos mots de passe. Un fichier de signature .sig.
+  Soyez confortable avec : je vous promets qu'il ne s'agit pas d'une perte de temps.
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+</body></html>
