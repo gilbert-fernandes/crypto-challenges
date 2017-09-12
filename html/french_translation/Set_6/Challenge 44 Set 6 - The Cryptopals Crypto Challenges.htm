@@ -1,0 +1,126 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 44 Jeu 6 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2044%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2044%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2044%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2044%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2044%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/6">Jeu 6</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/6/challenges/44">Epreuve 44</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Récupération de nonce DSA depuis une nonce répétée</h3>
+          <div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">Récompense cryptanalytique MVP</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      Cette attaque (et dans un groupe à courbe elliptique) est celle qui a brisé la PS3.
+      C'est une très, très grande attaque.
+    </p>
+  </div>
+</div>
+<p>
+  <a href="https://cryptopals.com/static/challenge-data/44.txt">Dans ce fichier se trouve une collection de signatures DSA.</a>
+  (NB: chaque message est suivi par une espace)
+</p>
+<p>
+  Ils ont été signés à l'aide de la clef publique suivante :
+</p>
+<pre>y = 2d026f4bf30195ede3a088da85e398ef869611d0f68f07
+    13d51c9c1a3a26c95105d915e2d8cdf26d056b86b8a7b8
+    5519b1c23cc3ecdc6062650462e3063bd179c2a6581519
+    f674a61f1d89a1fff27171ebc1b93d4dc57bceb7ae2430
+    f98a6a4d83d8279ee65d71c1203d2c96d65ebbf7cce9d3
+    2971c3de5084cce04a2e147821</pre>
+<p>
+  (en utilisant les mêmes paramètres de domaine que l'exercice précédent)
+</p>
+<p>
+  Il ne devrait pas être très difficile de trouver les messages
+  pour lequels nous avons utilisés un "k" de manière répétée.
+  Si vous avez une paire de ces messages, vous pouvez découvrir le "k"
+  que nous avons utilisé, avec la formule suivante :
+</p>
+<pre>         (m1 - m2)
+     k = --------- mod q
+         (s1 - s2)</pre>
+<div class="panel panel-warning">
+  <div class="panel-heading">
+    <h3 class="panel-title">Mathématiques de première année de lycée : étudiez !</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      Si vous voulez démystifier tout ceci, obtenez cette équation en partant
+      des équations DSA elles-mêmes.
+    </p>
+  </div>
+</div>
+<div class="panel panel-danger">
+  <div class="panel-heading">
+    <h3 class="panel-title">Les opérations mathématiques en groupe cyclique veulent vous piéger</h3>
+  </div>
+  <div class="panel-body">
+    N'oubliez pas que toutes ces mathématiques sont modulo q; s2 peut être plus
+    grand que s1, par exemple, mais ce n'est pas un problème si vous faites
+    votre soustraction modulo q. Si vous êtes comme moi, vous allez probablement
+    perdre une bonne heure à cause d'une parenthèse oubliée ou un modulo q.
+    (et n'oubliez pas cette fonction d'inversion modulo !)
+  </div>
+</div>
+<p>
+  Quelle est ma clef privée ? Son SHA1 (depuis l'hexadécimal) est :
+</p>
+<pre>   ca8f6f7c66fa362d40760d135b763eb8527d3d52</pre>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

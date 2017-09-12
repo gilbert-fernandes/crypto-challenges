@@ -1,0 +1,162 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 43 Jeu 6 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2043%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2043%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2043%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2043%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2043%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/6">Jeu 6</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/6/challenges/43">Epreuve 43</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Récupération de clef DSA depuis le nonce (*)</h3>
+          <p>
+<p><i>
+    (*) En cryptographie, un nonce est un nombre arbitraire destiné à être
+    utilisé une seule fois. Il s'agit souvent d'un nombre aléatoire ou
+    pseudo-aléatoire émis dans un protocole d'authentification pour
+    garantir que les anciennes communications ne peuvent pas être
+    réutilisées dans des attaques par rejeu.
+</i></p>
+  <b>Etape 1</b>: Déménagez très loin afin qu'il voit soit impossible
+  de voyager facilement jusqu'à nous.
+</p>
+<p>
+  <b>Etape 2</b>: implémentez le DSA, comprenant la signature, vérification
+  mais aussi la génération des paramètres.
+</p>
+<p>
+  <i>Ha Ha ! Vous êtes maintenant trop loin pour essayer de vous venger
+  et venir nous frapper !
+  </i>
+</p>
+<p>
+  <i>C'est une blague :</i> vous pouvez sauter l'étape de génération
+  de paramètres si vous le souhaitez; utilisez ceci :
+</p>
+<pre> p = 800000000000000089e1855218a0e7dac38136ffafa72eda7
+     859f2171e25e65eac698c1702578b07dc2a1076da241c76c6
+     2d374d8389ea5aeffd3226a0530cc565f3bf6b50929139ebe
+     ac04f48c3c84afb796d61e5a4f9a8fda812ab59494232c7d2
+     b4deb50aa18ee9e132bfa85ac4374d7f9091abc3d015efc87
+     1a584471bb1
+ 
+ q = f4f47f05794b256174bba6e9b396a7707e563c5b
+ 
+ g = 5958c9d3898b224b12672c0b98e06c60df923cb8bc999d119
+     458fef538b8fa4046c8db53039db620c094c9fa077ef389b5
+     322a559946a71903f990f1f7e0e025e2d7f7cf494aff1a047
+     0f5b64c36b625a097f1651fe775323556fe00b3608c887892
+     878480e99041be601a62166ca6894bdd41a7054ec89f756ba
+     9fc95302291</pre>
+<p>
+  ("Mais je veux des paramètres plus petits !" dites-vous ?
+  Alors générez-les vous-même !)
+</p>
+<p>
+  Une opération de signature par DSA génère une sous-clef aléatoire "k"
+  Vous le savez puisque vous avez implémenté la signature DSA.
+</p>
+<p>
+  Voici le premier et la plus facile des épreuves concernant la sous-clef
+  "k" du DSA.
+</p>
+<p>
+  Pour un "k" fourni, il est trivial de récupérer la clef privée
+  DSA "x" comme suit :
+</p>
+<pre>          (s * k) - H(msg)
+      x = ----------------  mod q
+                  r</pre>
+<p>
+  Faites-le plusieurs fois de suite afin de vous convaincre que vous
+  avez pigé. Implémentez-le sous la forme d'une fonction.
+</p>
+<p>
+  Ensuite. J'ai utilisé les paramètres ci-dessus. Généré une paire
+  de clefs. Ma clef publique est :
+</p>
+<pre>  y = 84ad4719d044495496a3201c8ff484feb45b962e7302e56a392aee4
+      abab3e4bdebf2955b4736012f21a08084056b19bcd7fee56048e004
+      e44984e2f411788efdc837a0d2e5abb7b555039fd243ac01f0fb2ed
+      1dec568280ce678e931868d23eb095fde9d3779191b8c0299d6e07b
+      bb283e6633451e535c45513b2d33c99ea17</pre>
+<p>
+  J'ai ensuite signé la phrase suivante :
+</p>
+<pre>For those that envy a MC it can be hazardous to your health
+So be friendly, a matter of life and death, just like a etch-a-sketch</pre>
+<p>
+  (mon SHA1 pour cette chaîne de caractères est <i>d2d0714f014a9784047eaeccf956520045c45265</i>;
+  Je ne sais pas ce que le NIST veut que vous fassiez, mais lorsque je
+  convertis ce hachage en entier I j'obtiens <i>0xd2d0714f014a9784047eaeccf956520045c45265</i>).
+</p>
+<p>
+  J'obtiens :
+</p>
+<pre>  r = 548099063082341131477253921760299949438196259240
+  s = 857042759984254168557880549501802188789837994940</pre>
+<p>
+  Sachant que j'ai signé cette chaîne en utilisant une implémentation
+  erronnée du DSA qui ne génère que des clefs "k" comprises entre 0 et 2^16,
+  quelle est ma clef privée ?
+</p>
+<p>
+  L'empreinte SHA1 de ma clef privée (une fois convertie en hexadécimal) est :
+</p>
+<pre>0954edd5e0afe5542a4adf012611a91912a3ec16</pre>
+<p>
+  De manière évidente, cela génère également la même signature pour
+  cette chaîne.
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

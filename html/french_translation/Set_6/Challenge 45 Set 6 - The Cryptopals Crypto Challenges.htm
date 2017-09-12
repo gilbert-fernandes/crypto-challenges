@@ -1,0 +1,94 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 45 Jeu 6 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2045%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2045%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2045%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2045%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2045%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/6">Jeu 6</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/6/challenges/45">Epreuve 45</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Altération des paramètres DSA</h3>
+          <p>
+  Prenez votre code DSA de l'exercice précédent. Imaginez-le comme partie
+  d'un algorithme où le client a le droit de proposer des paramètres
+  de domaine (les modulo p et q et le générateur g).
+</p>
+<p>
+  Ce serait un risque majeur, car des attaquants pourraient tromper
+  leurs victimes pour leur faire accepter de mauvais paramètres.
+  Vaudenay a donné deux exemples de mauvais générateurs de paramètres :
+  les générateurs qui sont 0 mod p, et ceux qui sont 1 mod p.
+</p>
+<p>
+  Utilisez les paramètres de l'exercice précédent, mais substituez
+  la valeur 0 pour "g". Générez une signature. Vous allez remarquer
+  quelque chose de très mauvais. Vérifiez la signature. Maintenant,
+  vérifiez toute autre signature, pour tout autre chaîne.
+</p>
+<p>
+  Maintenant essayez (p+1) comme valeur de "g". Avec ce "g" vous
+  pouvez générer une signature magique s, r pour toute clef DSA publique
+  qui sera capable de valider vis à vis de toute chaîne. Pour un
+  z choisi arbitrairement :
+</p>
+<pre>  r = ((y**z) % p) % q
+
+        r
+  s =  --- % q
+        z</pre>
+<p>
+  Signez les chaînes "Hello, world" puis "Goodbye, world".
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

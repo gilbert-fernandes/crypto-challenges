@@ -1,0 +1,152 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 42 Jeu 6 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2042%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2042%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2042%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2042%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2042%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/6">Jeu 6</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/6/challenges/42">Epreuve 42</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Attaque du RSA par Bleichenbacher avec e=3</h3>
+          <div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">Panneau publicitaire : crypto-tourisme</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      Cette attaque a servi à briser la validation des certificats TLS de Firefox
+      il y a quelques années. Vous pouviez écrire un script Python pour falsifier
+      une signature RSA pour n'importe quel certificat du navigateur.
+      Nous avons des failles identiques qui sont découvertes chaque année.
+    </p>
+  </div>
+</div>
+<p>
+  Le RSA est souvent implémenté avec un exposant de 3 car cela rend les
+  calculs mathématiques du RSA plus rapides.
+</p>
+<p>
+  En posant e=3, le chiffrement RSA revient à réaliser le cube d'un
+  nombre, modulo le modulo de chiffrement public.
+</p>
+<pre> c = m ** 3 % n</pre>
+<p>
+  e=3 est sûr tant qu'il n'est pas possible de faire des suppositions
+  au sujet des blocs de message que l'on est en train de chiffrer.
+  Le souci est que ce RSA de faire exposant produit, au chiffrement,
+  des blocs qui ne sont pas assez larges pour enrouler le modulo
+  une fois mis au cube. Le bloc 00:02 (en supposant que le remplissage
+  soit une série de 0) une fois chiffré sous RSA(e=3) produit simplement
+  00:08. 
+</p>
+<p>
+  Quand le RSA est utilisé pour signer, plutôt que chiffrer, les opérations
+  sont inversées; la personne qui vérifie "déchiffre" le message par mise
+  au cube. Cela produit alors un "texte clair" qu'il peut tester pour
+  vérifier la signature.
+</p>
+<p>
+  Quand on utilise le RSA pour signer un message, on lui donne en entrée
+  un hachage du message à signer. Le standard PKCS1.5 formatte le bloc
+  comme suit :
+</p>
+<pre>00h 01h ffh ffh ... ffh ffh 00h ASN.1 GOOP HASH</pre>
+<p>
+  Comme attendu, les octets ffh du bloc sont étendus pour remplir tout
+  le bloc, produisant un hachage "aligné à droite" (au dernier octet
+  du hachage correspond le dernier octet du message).
+</p>
+<p>
+  Il y a 7 ans, on trouvait fréquemment une implémentation incorrecte
+  des vérificateurs RSA : ils vérifiaient les signatures en les
+  "déchiffrant" (mise au cube du modulo de l'exposant public) puis
+  le résultat était "parsé" pour trouver 00h 01h ... ffh 00h ASN.1 HASH.
+</p>
+<p>
+  C'est un bug car cela implique que le vérificateur ne teste pas tout
+  le remplissage comme attendu. Si vous ne vérifiez pas le remplissage,
+  vous laissez donc ouverte la possibilité qu'aun lieu d'avoir quelques
+  centaines d'octets ffh vous n'en avez que très peu, ce qui permet donc
+  de tester des millions, milliards de chiffres possibles en variation
+  jusqu'à obtenir... une signature valide.
+</p>
+<p>
+  Comment trouver un tel bloc ? Trouvez un nombre qui, mis au cube (1)
+  ne fait pas s'enrouler le modulo (donc qui contourne entièrement
+  la clef) et (2) produit un bloc qui débute bien par
+  "00h 01h ffh ... 00h ASN.1 HASH".
+</p>
+<p>
+  Il y a deux manières différentes d'approcher ce problème :
+</p>
+<ul>
+  <li>
+    Vous pouvez partir de l'explication de Hal Finney qui est disponible
+    sur Google, et qui explique toutes les mathématiques de l'attaque
+    de Bleichenbacher si bien que vous pouvez "le faire à la main avec
+    du papier et un crayon"
+  </li>
+  <li>
+    Vous pouvez implémenter une racine cubique entière dans votre langage
+    favori, formater le bloc du message que vous voulez falsifier, en
+    laissant assez de 0 à la fin que l'on pourra remplir comme on veut,
+    puis prenez la racine cubique de ce bloc.
+  </li>
+</ul>
+<p>
+  Falsifiez une signature RSA de 1024-bits avec la chaîne "salut maman!"
+  Vérifiez également que votre implémentation accepte la signature !
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

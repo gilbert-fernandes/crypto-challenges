@@ -1,0 +1,130 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 41 Jeu 6 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2041%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2041%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2041%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2041%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2041%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/6">Jeu 6</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/6/challenges/41">Epreuve 41</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Implémenter un oracle de récupération de messages non-remplis</h3>
+          <p>
+  Nate Lawson est d'avis que nous devons cesser de parler de "remplissage RSA"
+  et utiliser l'appellation "armure RSA". Voici pourquoi.
+</p>
+<p>
+  Imaginez une application web, utilisant de nouveau le chiffrement Javascript,
+  et utilisant des messages chiffrés par RSA qui (de nouveau: Javascript) ne
+  sont pas remplis avant de subir l'étape de chiffrement.
+</p>
+<p>
+  Vous pouvez soumettre tout bloc arbitaire RSA au serveur, et ce dernier
+  renvoie le texte clair. Mais le serveur ne vous laisse pas envoyer
+  le même message deux fois : disons que le serveur conserve les
+  hachages des messages qui ont déjà été soumis, pour un intervalle de
+  temps donné, et que chaque message contient une datation incorporée.
+</p>
+<pre>{
+  time: 1356304276,
+  social: '555-55-5555',
+}</pre>
+<p>
+  Votre objectif est ce capturer les messages des autres personnes, et
+  d'utiliser le serveur pour les déchiffrer. Mais lorsque vous essayez,
+  le serveur calcule le hachage et détecte que le message a déjà été
+  déchiffré et rejette votre demande. Et si vous modifiez un bit du
+  message pour le rendre différent et contourner ce souci, vous créez
+  un message qui ne peut être déchiffré.
+</p>
+<p>
+  Il est en fait très facile de briser cette protection :
+</p>
+<ul>
+  <li>Capturez le texte chiffré C</li>
+  <li>On pose N et E les modulo publics et exponentiels respectivement</li>
+  <li>On pose S un nombre aléatoire &gt; 1 modulo N. Peu importe lequel.</li>
+  <li>
+    Maintenant :
+    <pre>C' = ((S**E modulo N) C) modulo N</pre>
+  </li>
+  <li>
+    Transmettez C' au serveur, lequel va penser qu'il est totalement
+    différent du C qu'il a déjà vu passer. Vous récupérez en sortie
+    P' qui va sembler être totalement différent de P.
+  </li>
+  <li>
+    Puis :
+    <pre>          P'
+    P = -----  mod N
+          S</pre>
+  </li>
+</ul>
+<p>
+  Oups!
+</p>
+<p>
+  Implémentez cette attaque.
+</p>
+<div class="panel panel-warning">
+  <div class="panel-heading">
+    <h3 class="panel-title">Attention à la division en groupe cyclique</h3>
+  </div>
+  <div class="panel-body">
+    N'oubliez pas : vous ne pouvez pas diviser modulo N; vous multipliez
+    par l'inverse multiplicatif modulo N. Vous allez donc devoir utiliser
+    ici votre fonction modinv()
+  </div>
+</div>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

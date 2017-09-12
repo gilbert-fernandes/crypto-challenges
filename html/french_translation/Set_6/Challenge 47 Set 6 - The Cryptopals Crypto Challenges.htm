@@ -1,0 +1,171 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 47 Jeu 6 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2047%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2047%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2047%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2047%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2047%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/6">Jeu 6</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/6/challenges/47">Epreuve 47</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Oracle de remplissage PKCS 1.5 de Bleichenbacher (cas simple)</h3>
+          <div class="panel panel-danger">
+  <div class="panel-heading">
+    <h3 class="panel-title">Niveau de difficulté : moyen</h3>
+  </div>
+  <div class="panel-body">
+    Les deux prochaines épreuves sont les plus difficiles de tout le jeu.
+  </div>
+</div>
+<p>
+  Laissez-nous chercher sur Google ceci pour vous :
+  <a href="http://lmgtfy.com/?q=%22Chosen+ciphertext+attacks+against+protocols+based+on+the+RSA+encryption+standard%22">
+    "Chosen ciphertext attacks against protocols based on the RSA encryption standard"
+  </a>
+</p>
+<p>
+  Provient de Bleichenbacher, publié au CRYPTO '98; vous le trouverez
+  en .ps dans la première page de résultats de recherche.
+</p>
+<p>
+  Lisez ce travail. Il décrit une attaque par oracle de remplissage
+  contre PKCS#1v1.5. L'attaque est conceptuellement similaire à
+  l'oracle de remplissage CBC que vous avez déjà programmé; mais ici
+  il s'agit d'une "attaque adaptive par texte chiffré choisi" ce
+  qui signifie que vous devez partir d'un texte chiffré valide et
+  procéder à sa corruption de manière répétée pour le transmettre à la
+  cible des textes chiffrés, et petit à petit obtenir des informations
+  au sujet du texte chiffré original.
+</p>
+<p>
+  C'est une faille classique de la plupart des cryptosystèmes modernes
+  qui reposent sur le RSA.
+</p>
+<p>
+  C'est aussi l'attaque la plus amusante à élaborer cryptographiquement.
+  Les mathématiques sont de niveau lycée (1ère année) mais vous devez
+  aussi implémenter un algorithme complexe équivalent à élaborer
+  un arbre de coûts.
+</p>
+<p>
+  La méthode :
+</p>
+<ul>
+  <li>
+    Construisez une fonction d'oracle, comme à l'exercice précédent,
+    mais vérifiez que textclair[0] == 0 et texteclair[1] == 2.
+  </li>
+  <li>
+    Générez une paire de clef 256-bits (ce qui signifie que p et q
+    sont chacun des premiers de 128-bits), [n, e, d].
+  </li>
+  <li>Insérez d et n au sein de votre fonction d'oracle.</li>
+  <li>
+    Remplissez par PKCS1.5 un message court, comme "lick it, CC"
+    que vous appellerez "m". Chiffrez ce message pour obtenir "c".
+  </li>
+  <li>
+    Déchiffrez "c" grâce à votre oracle de remplissage.
+  </li>
+</ul>
+<p>
+  Pour cette épreuve, on utilise un module RSA extrêmement petit
+  (vous devriez pouvoir factoriser la paire de clef instantanément).
+  C'est parce que cette épreuve cible une étape précise dans le travail
+  publié par Bleichenbacher : l'étape 2c où il implémente une recherche
+  rapide, de complexité proche de O(log n) pour retrouver le texte clair.
+</p>
+<p>
+  Pendant votre lecture du papier, conservez ceci à l'esprit :
+</p>
+<ul>
+  <li>Les textes chiffrés RSA ne sont que des nombres</li>
+  <li>
+    Le RSA est "homomorphique" vis à vis des multiplications, ce qui
+    signifie qu'on peut multiplier c * RSA(2) pour obtenir un c'
+    qui permettra de déchiffrer un texte clair * 2. Cela demande un
+    peu de gymnastique mentale mais dans votre code c'est plus
+    facile -- essayez de multiplier des textes chiffrés au sein
+    de chiffrements RSA jusqu'à être à l'aise avec ce concept.
+  </li>
+  <li>
+    Le plus important pour cette épreuve est que Bleichenbacher utilise
+    la multiplication de textes chiffrés de la même manière que l'oracle
+    CBC utilise des XOR de blocs aléatoires.
+  </li>
+  <li>
+    Un texte clair conforme à la norme PKCS#1v1.5 débute par 00:02 doit
+    être un nombre compris entre 02:00:00..00 et 02:FF:FF..FF -- en
+    d'autres termes, 2B et 3B-1 où B est le nombre de bits du modulo
+    moins les premiers 16 bits. Si vous voyez un 2B et 3B c'est l'idée
+    avec laquelle joue Bleichenbacher.
+  </li>
+</ul>
+<p>
+  Pour déchiffrer "c" vous aurez besoin de l'étape 2a du papier
+  (la recherche pour le premier "s" qui, chiffré et multiplié par
+  le texte chiffré produit un texte clair conforme), ainsi que les
+  étapes 2c, la recherche O(log n) rapide et l'étape 3.
+</p>
+<p>
+  Votre code qui va correspondre à l'étape 3 ne va pas avoir besoin
+  de gérer des intervalles multiples.
+</p>
+<p>
+  Nous vous recommandons de n'utiliser que les mathématiques du
+  papier tel que publié (vérifiez, encore et encore, votre traduction
+  de ces mathématiques dans votre code) et n'essayez pas de passer
+  trop de temps à en comprendre les mathématiques.
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Cryptography Services</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

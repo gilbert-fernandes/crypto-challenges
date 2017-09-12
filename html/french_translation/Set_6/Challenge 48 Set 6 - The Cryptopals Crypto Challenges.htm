@@ -1,0 +1,136 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 48 Jeu 6 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2048%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2048%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2048%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2048%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2048%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/6">Jeu 6</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/6/challenges/48">Epreuve 48</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Oracle de remplissage PKCS 1.5 de Bleichenbacher (cas complet)</h3>
+          <div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">Récompense cryptanalytique MVP</h3>
+  </div>
+  <div class="panel-body">
+    Cette attaque est extraordinairement utile. Le remplissage PKCS#1v15 bien
+    que sa sécurité soit nulle, n'en est pas moins le <i>remplissage par défaut
+    adopté par les implémentations de RSA</i>. Le standard OAEP qui le
+    remplace n'est pas encore utilisé partout. Cette attaque sert à casser
+    de manière routinière SSL et TLS.
+  </div>
+</div>
+<p>
+  Cet exercice est la suite de l'épreuve #47; ici nous allons implémenter
+  entièrement l'attaque BB '98.
+</p>
+<p>
+  Fautes la même chose qu'à l'exercice #47 mais cette fois générez
+  un modulo de 768 bits.
+</p>
+<p>
+  Pour que cette attaque fonctionne avec une paire de clef RSA réaliste,
+  vous devez reproduire l'étape 2b du papier publié, et votre
+  implémentation de l'étape 3 doit gérer des intervalles multiples.
+</p>
+<p>
+  L'attaque complète Bleichenbacher fonctionne basiquement comme suit :
+</p>
+<ul>
+  <li>
+    En partant du "s" le plus petit que peut produire un texte clair
+    plus grand que 2B, cherchez de manière itérative pour un "s"
+    qui produit un texte clair conforme.
+  </li>
+  <li>
+    Depuis nos "s1" et "n" connus, résolvez m1=m0s1-rn
+    (à nouveau : ce n'est que la définition d'une multiplication
+    modulaire) pour "r"; le nombre de fois qu'on a enroulé le
+    modulo.
+  </li>
+  <li>
+    "m0" et "m1" sont des inconnus, mais nous savons que les deux
+    sont conformes aux textes clairs PKCS#1v1.5 et se trouvent
+    donc entre 2B et 3B en intervalle.
+  </li>
+  <li>
+    On substitue les limites connues pour les deux, en ne
+    laissant que "r" libre et on résoud pour tout l'intervalle
+    possible de "r" en valeurs. Cet intervalle doit normalement
+    être petit !
+  </li>
+  <li>
+    Résolvez m1=m0s1-rn mais cette fois pour "m0" en insérant
+    chaque valeur de "r" qui a été générée à l'étape précédente.
+    Ceci va nous donner une nouvelle série d'intervalles avec
+    lesquels jouer. Eliminez tout intervalle qui se trouve
+    en dehors de [2B, 3B].
+  </li>
+  <li>
+    Répétez le processeur pour chaque valeur correcte de "s".
+    Ce processus va nous conduire à un, et un seul, intervalle
+    et on revient alors à l'exercice #47.
+  </li>
+</ul>
+<p>
+  Quand on parvient à cet intervalle, on arrête d'incrémenter "s"
+  bêtement; on se met alors à faire croître rapidement "r" qu'on
+  rapporte aux valeurs de "s" en résolvant m1=m0s1-rn pour "s" au
+  lieu de "r" ou "m0". Cela fait beaucoup d'opérations mathématiques!
+  Vous pouvez forcer votre fils adolescent à le faire pour vous !
+  *Note* : cela ne fonctionne pas bien en pratique.
+</p>
+<iframe src="Challenge%2048%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/SBCw4_XgouA.htm" allowfullscreen="" width="420" height="315" frameborder="0"></iframe>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Cryptography Services</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

@@ -1,0 +1,148 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 46 Jeu 6 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2046%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2046%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2046%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2046%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2046%20Set%206%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/6">Jeu 6</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/6/challenges/46">Epreuve 46</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Oracle de parité RSA</h3>
+          <div class="panel panel-warning">
+  <div class="panel-heading">
+    <h3 class="panel-title">Pourquoi cela est-il possible ?</h3>
+  </div>
+  <div class="panel-body">
+    C'est un peu un cas d'école, mais c'est très utile pour
+    comprendre ce que fait le RSA (et pourquoi la cryptographie
+    purement basée sur la théorie des nombres est absolument
+    terrifiante). Faites-nous confiance : vous devez faire cet
+    exercice avant d'attaquer l'épreuve qui va suivre.
+    En plus, c'est amusant !
+  </div>
+</div>
+<p>
+  Générez une paire de clef RSA de 1024 bits.
+</p>
+<p>
+  Ecrivez une fonction d'oracle qui utilise la clef privée pour répondre
+  à la question "le texte clair de ce message est-il pair ou impair ?"
+  (c'est à dire : est-ce que le dernier bit du message est égal à 0 ou 1).
+  Imaginez par exemple qu'un serveur qui accepte des messages chiffrés
+  par RSA et qui vérifie la parité du déchiffrement pour les valider,
+  et produit une erreur si la parité est incorrecte.
+</p>
+<p>
+  Quoi qu'il en soit : la fonction doit renvoyer true/false selon
+  que le texte déchiffré est impair ou pair, et rien d'autre.
+</p>
+<p>
+  Prenez la chaîne suivante et après avoir retiré le codage Base64
+  (ne regardez pas le véritable contenu !) chiffrez celle-ci avec
+  la clef publique, pour produire un texte chiffré :
+</p>
+<pre>VGhhdCdzIHdoeSBJIGZvdW5kIHlvdSBkb24ndCBwbGF5IGFyb3VuZCB3aXRoIHRoZSBGdW5reSBDb2xkIE1lZGluYQ==</pre>
+<p>
+  Ensuite, à l'aide de votre fonction d'oracle, il vous sera facile
+  de déchiffrer le message.
+</p>
+<p>
+  Voici pourquoi :
+</p>
+<ul>
+  <li>
+    Les textes chiffrés RSA ne sont que des nombres. Les mathématiques
+    en oeuvre sont triviales. On peut par exemple multiplier un texte
+    chiffré par le chiffrement RSA d'un autre nombre et le texte
+    chiffré obtenu sera le produit de ces deux nombres.
+  </li>
+  <li>
+    Si vous doublez la valeur d'un texte chiffré (en le multipliant par
+    (2**e)%n), le texte chiffré sera pair ou impar.
+  </li>
+  <li>
+    Si le texte clair après doublement est impair, doubler le texte clair
+    <i>n'a as enroulé le modulo</i> -- le modulo est un nombre premier.
+    Cela signifie donc que le texte clair est inférieur à la moitié
+    du modulo.
+  </li>
+</ul>
+<p>
+  On peut appliquer cette heuristique de manière répétée, une fois par bit
+  du message, en faisant à chaque fois appel à la fonction d'oracle.
+</p>
+<p>
+  Votre fonction de déchiffrement débute avec les limites du texte
+  clair pour [0,n]
+</p>
+<p>
+  Chaque itération du déchiffrement coupe la limite à la moitié;
+  soit la limite supérieur est réduite de moitié, soit c'est le cas
+  de la limite inférieure.
+</p>
+<p>
+  Après log2(n) intégrations, vous aurez la version déchiffrée
+  du message.
+</p>
+<p>
+  Imprimez la limite supérieur du message sous la forme d'une chaîne
+  à chaque itération; cela produit un effet de déchiffrement
+  "style Hollywood".
+</p>
+<p>
+  Déchiffrez la chaîne (après l'avoir chiffrée avec une clef privée
+  cachée) ci-dessus.
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>
