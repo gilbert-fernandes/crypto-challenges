@@ -1,0 +1,251 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuves cryptographiques des Cryptopals</title>
+    <link href="The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques des Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+<div class="row">
+  <div class="col-md-2">
+    <ul class="nav nav-pills nav-stacked">
+      <li>
+        <a href="https://cryptopals.com/sets/1">Jeu 1: Les bases</a>
+      </li>
+      <li>
+        <a href="https://cryptopals.com/sets/2">Jeu 2: Cryptographie par blocs</a>
+      </li>
+      <li>
+        <a href="https://cryptopals.com/sets/3">Jeu 3: Cryptographie par blocs et de flux</a>
+      </li>
+      <li>
+        <a href="https://cryptopals.com/sets/4">Jeu 4: Cryptographie de flux et aléatoire</a>
+      </li>
+      <li>
+        <a href="https://cryptopals.com/sets/5">Jeu 5: Diffie-Hellman et ses amis</a>
+      </li>
+      <li>
+        <a href="https://cryptopals.com/sets/6">Jeu 6: RSA et DSA</a>
+      </li>
+      <li>
+        <a href="https://cryptopals.com/sets/7">Jeu 7: Hachages</a>
+      </li>
+      <li>
+        <a href="https://cryptopals.com/sets/8">Jeu 8: Algèbre abstraite</a>
+      </li>
+    </ul>
+  </div>
+  <div class="col-md-10">
+    <h2>Bienvenue aux épreuves</h2>
+    <div class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title">En construction</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          Ce site regroupe nos huit ensembles d'épreuves cryptographiques,
+          avec des solutions dans la plupart des langages.
+        </p>
+        <p>
+          Mais tout n'est pas présent sur le site pour l'instant.
+          Il nous faudrait tout retarder trop longtemps si nous ne publions
+          pas au fur et à mesure. En particulier, il faudra être patient(e)
+          avant que les solutions ne soient publiées.
+        </p>
+      </div>
+    </div>
+    <p>
+      Nous ne pouvons mieux l'introduire que 
+      <a href="https://blog.pinboard.in/2013/04/the_matasano_crypto_challenges/">Maciej Ceglowski</a>
+      donc commencez par lire son blog.
+    </p>
+    <p>
+      Nous avons mis au point une série de 48 exercices qui mettent en
+      pratique des attaques sur de la cryptographie en usage.
+    </p>
+    <p>
+      C'est une approche différente pour apprendre la cryptographie, par
+      rapport à suivre un cours ou lire un livre; nous allons vous donner
+      des problèmes à résoudre. Ils sont dérivés depuis des faiblesses
+      présentes au sein de véritables systèmes cryptographiques modernes.
+      Nous allons vous donner assez d'information pour comprendre les
+      concepts concepts sous-jascents. Quand vous aurez terminé ces
+      épreuves, vous disposerez non seulement de solides connaissances
+      des systèmes cryptographiques, de la manière dont ils sont
+      construits, mais vous saurez également comment ils sont attaqués.       
+    </p>
+    <h4>Quelles sont les règles ?</h4>
+    <p>
+      Il n'y a aucune règle ! Pendant des années nous avons uniquement
+      diffusé ces épreuves par email et nousa vons demandé aux
+      participants de ne pas publier leurs résultats. <i>Ce système
+      de confiance</i> a parfaitement fonctionné ! Mais nous sommes
+      maintenant prêts à mettre de côté l'aspect cérémonial et
+      publier ces épreuves pour qu'elles soient accessibles à tous et
+      toutes.
+    </p>
+    <h4>
+      Quel est le niveau de mathématiques requis ?
+    </h4>
+    <p>
+      Si vous avez du mal avec les mathématiques, vous devriez pouvoir
+      vous faire aider par un lycéen de 1ère ou 2ème année. Les
+      attaques sur la cryptographie moderne ne demandent pas vraiment
+      un haut niveau de mathématiques pour les implémenter.
+    </p>
+    <h4>
+      Quel est le niveau requis en cryptographie ?
+    </h4>
+    <p>
+      Aucun : c'est justement le but.
+    </p>
+    <h4>
+      Donc que dois-je savoir au juste ?
+    </h4>
+    <p>
+      Vous devez savoir programmer correctement dans au moins
+      un langage. Nous avons reçu du code en C, C++, Python, Ruby,
+      Perl, Visual Basic, assembleur x86, Haskell et Lisp. Vous
+      pouvez nous surprendre avec un autre langage. Notre ami Maciej
+      pense que ces épreuves sont une bonne méthode pour apprendre
+      un nouveau langage donc peut être qu'il est temps d'essayer
+      Clojure ou Rust.
+    </p>
+    <h4>
+      A quoi dois-je m'attendre ?
+    </h4>
+    <p>
+      Actuellement nous avons huit jeux d'épreuve. Ils sont de
+      difficulté croissante. A nouveau : tous sont basés sur
+      de véritables vulnérabilités qui ont été exploitées pour
+      des attaques. Aucun de ces "jeux" ne constitue un puzzle.
+      Quoique, si vous n'avez aucun touché pour la cryptographie
+      cela pourrait rapidement le devenir... Certaines attaques
+      sont malicieuses et demandent un certain état d'esprit.
+      Un goût prononcé pour le hip-hop des années 90 diffusé
+      sur MTV pourra aider.
+    </p>
+    <h4>
+      Pouvez-vous nous donner une description élaborée et indulgente
+      de pourquoi vous avez décidé de faire une telle chose ?
+    </h4>
+    <p>
+      <i>Tout simplement parce que nous pouvons.</i>
+    </p>
+    <p>
+      Si vous n'êtes pas familier(e) dans le domaine de la
+      cryptographie ou que vos connaissances proviennent de
+      choses comme "Cryptographie appliquée" ce fait pourrait
+      vous surprendre : la plupart des implémentations de
+      cryptographie sont défaillantes. Les systèmes sur lesquels
+      nous faisons reposer aujourd'hui la cryptographie ne sont pas
+      totalement brisés, mais sont plus dans un état "prêts à être
+      brisés". Personne ne sait si TLS 1.2, SSH2 ou OTR vont rester
+      sûrs ou non.
+    </p>
+    <p>
+      L'état actuel de la sécurité logicielle cryptographique est
+      aujourd'hui dans le même état que les logiciels de sécurité
+      des années 90. Spécifiquement, jusque 1995, personne n'était
+      surpris quand un logiciel conçu par des humains ne calculait
+      pas correctement. Pour résultat, personne n'était capable de
+      dimensionner correctement un buffer, et l'humanité a subi
+      des pertes de plusieurs milliards de dollars pendant une
+      décennie pour réparer ces erreurs, après avoir subi une
+      décennie de correctifs dans l'urgence pour des vulnérabilités
+      de corruption de mémoire. 
+    </p>
+    <p>
+      Compter n'est pas un problème difficile. Mais la cryptographie
+      l'est. Il y a beaucoup de choses où vous pouvez vous tromper
+      facilement et finir avec une taille de buffer incorrecte.
+      Il y a des dizaines, probablement des centaines, de petites
+      choses obscures au sein de tout système cryptographique que
+      vous pouvez implémenter pour rendre votre système plus sûr
+      contre un attaquant qui disposerait de plus de coeurs de
+      processeurs qu'il n'existe d'atomes dans le système solaire,
+      et au final voir un simple script Perl briser votre système
+      en moins de 15 secondes... Et vous n'avez pas besoin de nous
+      croire sur parole : faites les exercices et vous pourrez
+      le confirmer vous-même.
+    </p>
+    <p>
+      Si la plupart des gens le savent déjà, ce n'est le plus souvent
+      que d'instinct et c'est parce que très peu de personnes sont
+      capables d'implémenter les attaques les plus efficaces. Donc,
+      contactez-nous et nous vous offrirons un aperçu.
+    </p>
+    <h4>
+      Par quoi débuter ?
+    </h4>
+    <p>
+      <a href="https://cryptopals.com/sets/1">Commencez ici !</a>
+    </p>
+    <h4>Qui est derrière tout ceci ?</h4>
+    <ul>
+      <li>Thomas Ptacek (@tqbf)</li>
+      <li>Sean Devlin (@spdevlin)</li>
+      <li>Alex Balducci (@iamalexalright)</li>
+      <li>Marcin Wielgoszewski (@marcinw)</li>
+    </ul>
+    <p>
+      Cryptopals est maintenu et a été étendu (à partir du jeu 8) par Sean Devlin,
+      avec l'aide de
+      <a href="https://www.nccgroup.trust/us/our-services/security-consulting/cryptography-services/">l'équipe des services cryptographiques</a>
+      au sein du <a href="https://www.nccgroup.trust/us/">Groupe NCC</a>.
+    </p>
+    <p>
+      Nous n'aurions pas pu réaliser tout ceci sans l'aide de plusieurs personnes.
+      En ordre d'influence approximatif :
+    </p>
+    <ul>
+      <li>
+        <a href="http://www.rootlabs.com/">Nate Lawson</a>
+        qui nous a appris pratiquement tout ce que nous savons en matière
+        de cryptographie.
+      </li>
+      <li>
+        <a href="http://tevp.net/">Trevor Perrin</a>
+        qui a lui-même appris pas mal de choses à Nate. Je peux vous dire que Trevor
+        est le cerveau à l'origine de toutes les attaques contre TLS à succès depuis
+        au moins 5 ans.
+      </li>
+      <li>
+        Thai Duong et Juliano Rizzo sont les parrains de la sécurité logicielle cryptographique
+        en usage. Plusieurs choses dans ces épreuves semblaient n'avoir aucun sens jusqu'à ce
+        que Thai et Juliano ne les utilisent pour briser des logiciels majeurs en usage.
+      </li>
+    </ul>
+  </div>
+</div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>
