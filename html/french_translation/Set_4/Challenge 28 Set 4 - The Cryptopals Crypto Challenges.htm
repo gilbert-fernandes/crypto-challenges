@@ -1,0 +1,86 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 28 Jeu 4 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2028%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2028%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2028%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2028%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2028%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/4">Jeu 4</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/4/challenges/28">Epreuve 28</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Implémenter un SHA-1 à préfixe MAC</h3>
+          <p>
+  Trouvez une implémentation du SHA-A disponible dans votre langage préféré.
+</p>
+<div class="panel panel-warning">
+  <div class="panel-heading">
+    <h3 class="panel-title">Ne trichez pas. Cela ne fonctionnera pas.</h3>
+  </div>
+  <div class="panel-body">
+    N'utilisez pas une implémentation SHA-1 qui serait disponible au sein
+    de votre langage (par exemple n'utilisez pas la librairie "Digest" de Ruby,
+    n'utilisez pas OpenSSL; et en Ruby, n'utilisez pas un SHA-1 Ruby-pur).
+  </div>
+</div>
+<p>
+  Ecrivez une fonction qui permet d'authentifier un message à partir
+  d'une clef secrète combinée à un préfixe MAC, soit :
+</p>
+<pre>SHA1(key || message)</pre>
+<p>
+  Vérifiez ensuite qu'il vous est impossible d'altérer le message
+  sans briser le MAC et qu'il vous est impossible de produire un nouveau
+  MAC sans connaître la clef secrète.
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

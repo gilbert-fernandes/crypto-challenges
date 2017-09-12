@@ -1,0 +1,107 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 27 Jeu 4 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2027%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2027%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2027%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2027%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2027%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/4">Jeu 4</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/4/challenges/27">Epreuve 27</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Récupérer la clef d'un CBC où IV=clef</h3>
+          <p>
+  Prenez votre code créé pour
+  <a href="https://cryptopals.com/sets/2/challenges/16">l'exercice CBC</a>
+  et modifiez-le pour que la clef utilisée pour le chiffrement CBC soit
+  identique au vecteur d'initialisation (IV).
+</p>
+<p>
+  Nombre d'applications utilisent la clef comme vecteur d'initialisation
+  en imaginant que l'émetteur et destinataire partagent une clef
+  commune, et que cela permet d'économiser de l'espace s'il n'est pas
+  nécessaire de stocker une clef et un IV de manière séparée.
+</p>
+<p>
+  Utiliser la clef comme IV est un risque de sécurité majeur; un attaquant
+  peut modifier le texte chiffré pendant sa transmission et peut pousser
+  le destinataire à déchiffrer une valeur qui lui permettra d'obtenir
+  la clef.
+</p>
+<p>
+  Le code CBC provenant de l'exercice 16 permet de chiffrer une chaîne URL.
+  Vérifiez que chaque octet du texte clair ne contient que des caractères
+  strictement ASCII (ie recherchez toute valeur ASCII ne respectant pas
+  un encodage strict sur 7 bits). Les messages non-conformes doivent
+  provoquer une exception ou renvoyer un code d'erreur qui doit être
+  accompagné du texte clair déchiffré (cela survient très fréquemment
+  au sein de véritables systèmes cryptographiques en usage). 
+</p>
+<p>
+  Utilisez votre code pour chiffrer un message d'au moins 3 blocs de longueur :
+</p>
+<pre>AES-CBC(P_1, P_2, P_3) -&gt; C_1, C_2, C_3</pre>
+<p>
+  Modifiez le message (vous êtes maintenant l'attaquant) :
+</p>
+<pre>C_1, C_2, C_3 -&gt; C_1, 0, C_1</pre>
+<p>
+  Déchiffrez le message (vous êtes maintenant le destinataire) et lever
+  l'erreur appropriée si un caractère ASCII invalide esst détecté. 
+</p>
+<p>
+  En tant qu'attaquant, récupérez le texte clair provenant de l'erreur,
+  et réalisez l'extraction de la clef :
+</p>
+<pre>P'_1 XOR P'_3</pre>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

@@ -1,0 +1,114 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 31 Jeu 4 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2031%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2031%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2031%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2031%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2031%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/4">Jeu 4</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/4/challenges/31">Epreuve 31</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Implémenter puis briser SHA1-HMAC par fuite temporelle artificielle</h3>
+          <p>
+  Le pseudo-code sur Wikimedia devrait être suffisant : HMAC est très facile.
+</p>
+<p>
+  En utilisant le framework Web de votre choix (Sinatra, web.py, peu importe)
+  écrivez une petite application contenant uen URL qui prend un argument
+  "fichier" et un argument "signature" de ce genre : 
+</p>
+<pre>http://localhost:9000/test?file=foo&amp;signature=46b4ec586117154dacd49d664e5d63fdc88efb51</pre>
+<p>
+  Faites générer par le serveur une clef HMAC puis vérifiez que la "signature"
+  des requêtes en entrée sont valides pour le "fichier" et utilisez
+  l'opérateur "==" pour comparer le MAC valide pour le fichier avec
+  celui reçu en paramètre dans l'argument "signature" (en d'autres termes,
+  vérifiez le HMAC de la même manière qu'un programmeur normal le ferait).
+</p>
+<p>
+  Ecrivez une fonction, que vous nommerez "insecure_compare" qui implémente
+  l'opération "==" en faisant une comparaison octet par octet à sortie
+  rapide (ie de renvoyer la valeur false dès qu'un octet invalide est
+  rencontré).
+</p>
+<p>
+  Dans la boucle au sein de "insecure_compare" ajoutez une mise en sommeil
+  du programme de 50 ms (et ce, après chaque octet traité).
+</p>
+<p>
+  Utilisez votre fonction "insecure_compare" pour vérifier les HMAC
+  en entrée, et testez que votre assemblage fonctionne réellement.
+  Renvoyez la valeur "500" si le MAC est invalide, autrement renvoyez
+  la valeur 200.
+</p>
+<p>
+  En utilisant la fuite temporelle présente au sein de cette application,
+  écrivez un programme capable de découvrir le MAC valide de tout fichier
+  que l'on veut injecter.
+</p>
+<div class="panel panel-warning">
+  <div class="panel-heading">
+    <h3 class="panel-title">Pourquoi ralentir artificiellement ?</h3>
+  </div>
+  <div class="panel-body">
+    Les comparaisons à "sortie rapide" sont une des erreurs les plus fréquentes
+    provoquant des fuites temporelles, mais elles ne sont pas spécialement faciles
+    à exploiter. En fait, la plupart de ces fuites (par exemple, en C, C++, Ruby
+    ou Python) ne seront probablement pas exploitables si le réseau est de taille
+    assez importante. Pour exploiter réellement ces failles, il vous faut écrire
+    du code pour mesurer le temps à bas-niveau. Dans ces épreuves, nous allons
+    rester dans un cadre cryptographique.    
+  </div>
+</div>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

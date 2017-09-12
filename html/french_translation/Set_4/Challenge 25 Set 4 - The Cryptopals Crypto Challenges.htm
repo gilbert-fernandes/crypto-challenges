@@ -1,0 +1,99 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 25 Jeu 4 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2025%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2025%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2025%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2025%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2025%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/4">Jeu 4</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/4/challenges/25">Epreuve 25</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Briser l'AES-CTR à accès "aléatoire en lecture/écrire"</h3>
+          <p>
+  Retour au CTR. Chiffrez le texte clair qui se trouve
+  <a href="https://cryptopals.com/static/challenge-data/25.txt">dans ce fichier</a>
+  (provient de l'exercice ECB) en utilisant un AES-CTR et une clef aléatoire
+  (pour cet exercice, faites en sorte de ne pas connaître la clef mais il faudra
+  la conserver post-chiffrement).
+</p>
+<p>
+  Maintenez, écrivez le code qui permet de "cibler" toute partie du texte
+  chiffré, de réaliser le déchiffrement, puis chiffrer de nouveau un texte
+  clair différent à la même position. Exposez ce code sous la forme d'une
+  fonction dont la signature est <i>"edit(ciphertext, key, offset, newtext)"</i>.
+</p>
+<p>
+  Imaginez ensuite que cette fonction "d'édition" a été exposée
+  à des attaquants au-travers d'un appel d'API qui n'a pas révélé la clef
+  ou le texte clair d'origine; l'attaquant ne dispose que du texte chiffré
+  mais contrôle l'<i>"offset"</i> et le <i>"next text"</i>.
+</p>
+<p>
+  Votre épreuve consiste à récupérer le texte clair d'origine.
+</p>
+<div class="panel panel-warning">
+  <div class="panel-heading">
+    <h3 class="panel-title">De quoi réfléchir</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      Un bénéfice supposé du mode CTR folkorique est la capacité de facilement
+      "avancer à volonté" au sein du texte chiffré en accès. Pour accéder à
+      l'octet N du texte chiffré, on génère l'octet N du keystream permettant
+      l'accès au texte clair correspondant. Cette technique serait particulièrement
+      adaptée au chiffrement d'un disque par exemple.
+    </p>
+  </div>
+</div>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

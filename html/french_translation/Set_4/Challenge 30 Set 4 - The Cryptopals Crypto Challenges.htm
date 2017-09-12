@@ -1,0 +1,81 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 30 Jeu 4 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2030%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2030%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2030%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2030%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2030%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/4">Jeu 4</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/4/challenges/30">Epreuve 30</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Briser un MD4 préfixé MAC par extension de longueur</h3>
+          <p>
+  Attaque identique à la précédente, mais on remplace le SHA-1 par MD4.
+  Ayant déjà mené cette attaque contre le SHA-1, la variante MD4 devrait
+  prendre beaucoup moins de temps; probablement le temps qu'il vous faut
+  pour mettre la main sur une implémentation de MD4.
+</p>
+<div class="panel panel-warning">
+  <div class="panel-heading">
+    <h3 class="panel-title">Vous vous demandez : pourquoi s'embêter avec tout ceci ?</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      C'est la faute de Stripe. Dans leur second jeu CTF, l'avant-dernière épreuve
+      consistait à briser un MAC SHA-1 H(k,m). Ce qui signifie que le code SHA-1
+      flotte un peu partout sur Internet. Mais du code pour MD4, pas vraiment.
+    </p>
+  </div>
+</div>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

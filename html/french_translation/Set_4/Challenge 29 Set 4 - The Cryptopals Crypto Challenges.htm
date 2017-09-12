@@ -1,0 +1,135 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 29 Jeu 4 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2029%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2029%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2029%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2029%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2029%20Set%204%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/4">Jeu 4</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/4/challenges/29">Epreuve 29</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Briser un SHA-1 préfixé par MAC par extension de longueur</h3>
+          <p>
+  Il est facile de briser les SHA-1 préfixés par des MAC.
+</p>
+<p>
+  L'attaque sur un SHA-1 préfixé par MAC repose sur le fait qu'on peut
+  prendre une sortie de SHA-1 et l'utiliser comme nouveau point de départ
+  pour SHA-1, et donc prendre un SHA-1 arbitraire et "l'alimenter avec
+  plus de données".
+</p>
+<p>
+  Puisque la clef précède les données au sein du préfixe secret, toute
+  donnée supplémentaire qui alimente le SHA-1 semblera avoir été
+  hachée à l'aide de la clef secrète.
+</p>
+<p>
+  Pour mener cette attaque, vous devez prendre en compte le fait que
+  le SHA-1 subit un "remplissage" dont la taille ne bit est celle du
+  message; votre message falsifié doit donc inclure ce remplissage.
+  On appelle ce dernier le "remplissage de colle". Le message final
+  falsifié doit être :
+</p>
+<pre>SHA1(clef || message-d'origine || remplissage-colle || nouveau-message)</pre>
+<p>
+  (où le remplissage final du message construit est implicite)
+</p>
+<p>
+  Notez que pour générer le remplissage "de colle" vous devez connaître
+  la taille originelle du message en bits; le message lui-même est connu
+  de l'attaquant, mais la clef secrète ne l'est pas, donc vous devez
+  la deviner.
+</p>
+<p>
+  Cela semble plus complexe qu'en réalité.
+</p>
+<p>
+  Pour implémenter cette attaque, vous devez d'abord écrire une fonction
+  qui calcule le remplissage MD d'un message arbitraire et vérifiez
+    que vous générez le même remplissage que celui qui est utilisé par
+    votre implémentation du SHA-1. Ceci devrait vous prendre entre 5 et
+    10 minutes.
+</p>
+<p>
+  Puis, prenez le préfixe secret MAC utilisé avec le SHA-1 du message
+  que l'on veut falsifier (il s'agit juste d'un hachage à SHA-1)
+  et découpez-le en registres de 32 bits SHA-1 chacun
+  (SHA-1 nomme ces derniers "a", "b", "b", etc.)
+</p>
+<p>
+  Modifiez votre implémentation de SHA-1 pour que les appels passent
+  de nouvelles valeurs pour "a", "b", "c".. (elles sont réglées au
+  départ à des valeurs "magiques") et hachez les données supplémentaires
+  que vous voulez falsifier. 
+</p>
+<p>
+  En utilisant cette attaque, générez un préfixe MAC secret sous une clef
+  secrète (utilisez un mot choisis au hasard dans /usr/share/dict/words
+  ou équivalent) de la chaîne :
+</p>
+<pre>"comment1=cooking%20MCs;userdata=foo;comment2=%20like%20a%20pound%20of%20bacon"</pre>
+<p>
+  Falsifiez une variante de ce message qui doit se terminer par ";admin=true".
+</p>
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">Cette attaque est très utile</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      Par exemple, Thai Duong et Juliano Rizzo ont utilisé cette attaque pour briser l'API de Flickr.
+    </p>
+  </div>
+</div>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>
