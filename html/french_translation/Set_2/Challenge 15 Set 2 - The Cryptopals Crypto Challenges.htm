@@ -1,0 +1,83 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 15 Jeu 2 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2015%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2015%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2015%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2015%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2015%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/2">Jeu 2</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/2/challenges/15">Epreuve 15</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Validation de remplissage PKCS#7</h3>
+          <p>
+          
+  Ecrivez une fonction qui prend un texte clair, et détermine si son remplissage (padding)
+  est valide, puis retire le remplissage s'il est valide.
+</p>
+<p>La chaîne :</p>
+<pre>"ICE ICE BABY\x04\x04\x04\x04"</pre>
+<p>... possède un remplissage valide, et produit pour résultat "ICE ICE BABY".</p>
+<p>La chaîne :</p>
+<pre>"ICE ICE BABY\x05\x05\x05\x05"</pre>
+<p>... ne possède pas un remplissage valide, pas plus que la chaîne suivante :</p>
+<pre>"ICE ICE BABY\x01\x02\x03\x04"</pre>
+<p>
+  Si vous utilisez un langage disposant d'exceptions, comme le Python ou Ruby,
+  écrivez votre fonction afin qu'elle génère une exception quand un remplissage
+  invalide est détecté.
+</p>
+<p>
+  Les nerds amateurs de crytographie savent déjà où nous allons ici. Soyez patients.
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

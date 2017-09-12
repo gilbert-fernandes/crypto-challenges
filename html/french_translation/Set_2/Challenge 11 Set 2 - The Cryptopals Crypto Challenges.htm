@@ -1,0 +1,95 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 11 Jeu 2 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2011%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2011%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2011%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2011%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2011%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/2">Jeu 2</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/2/challenges/11">Epreuve 11</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Oracle de détection ECB/CBC</h3>
+          <p>
+  Maintenant que vous avez un ECB et CBC fonctionnel :
+</p>
+<p>
+  Ecrivez une fonction qui génère une clef AES aléatoire; cela correspond
+  à 16 octets aléatoires.  
+</p>
+<p>
+  Ecrivez une fonction qui chiffre des données à l'aide de cette clef aléatoire,
+  c'est à dire un efonction qui génère une clef aléatoire, puis l'utilise pour
+  chiffrer des données.
+</p>
+<p>
+  La fonction doit ressembler à ceci :
+</p>
+<pre>encryption_oracle(votre-entrée)
+=&gt; [SORTIE CHIFREE]</pre>
+<p>
+  Votre fonction, sous le capot, va <i>ajouter</i> 5 à 10 octets (ce nombre choisi
+  aléatoirement) <i>avant</i> le texte clair (non-chiffré) et <i>après</i> ce dernier.
+</p>
+<p>
+  Ensuite, vous allez modifier votre programme afin qu'il chiffre aléatoirement
+  une fois sur deux en ECB, et une fois sur deux en CBC. Pour CBC vous utiliserez
+  des IV aléatoires. Pour choisir entre ECB et CBC, utilisez par exemple la fonction
+  rand(2).
+</p>
+<p>
+  L'exercice est de parvenir à détecter le mode de chiffrement qui a été choisi
+  par la fonction aléatoirement. Votre code doit être capable, si on lui transmet
+  un bloc de texte chiffré, d'indiquer s'il a été chiffré sous ECB ou CBC.
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

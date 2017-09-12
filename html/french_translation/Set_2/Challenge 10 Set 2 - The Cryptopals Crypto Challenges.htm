@@ -1,0 +1,98 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 10 Jeu 2 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2010%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2010%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2010%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2010%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2010%20Set%202%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/2">Jeu 2</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/2/challenges/10">Epreuve 10</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Implémenter le mode CBC</h3>
+          <p>
+  Le mode CBC est un mode de chiffrement par bloc qui permet de chiffrer des
+  messages de taille irrégulière, malgré le fait qu'un chiffrement par bloc
+  n'est nativement capable que de travailler sur des blocs individuels.          
+</p>
+<p>
+  En mode CBC, chaque bloc de texte chiffré est ajouté au bloc suivant
+  contenant du texte clair avant le prochain appel au coeur cryptographique.
+</p>
+<p>
+  Le premier bloc de texte a chiffrer, parce qu'il ne dispose d'aucun bloc chiffré
+  qui le précède, est ajouté à un "faux bloc de texte chiffré de position 0" qu'on
+  appelle le <i>vecteur d'initialisation</i> ou IV. 
+</p>
+<p>
+  Implémentez le bloc CBC manuellement, en partant de la fonction ECB préalablement
+  écrite, en l'utilisant pour <i>chiffrer</i> plutôt que <i>déchiffrer</i> (en vérifiant
+  qu'on peut déchiffrer ce qu'on avait chiffré en guise de test) puis utilisez la fonction
+  XOR de l'exercice précédent pour combiner les deux.
+</p>
+<p>
+  <a href="https://cryptopals.com/static/challenge-data/10.txt">Le fichier ici</a>
+  est intelligible (à peu près) quand on le déchiffre depuis CBC avec "YELLOW SUBMARINE"
+  avec un IV ne contenant que des caractères ASCII 0 (\x00\x00\x00 &amp;c)
+</p>
+<div class="panel panel-danger">
+  <div class="panel-heading">
+    <h3 class="panel-title">Ne trichez pas</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      N'utilisez-pas le mode CBC d'OpenSSL pour faire du CBC, y compris pour vérifier
+      vos résultats. Quel est l'intérêt de tous ces efforts si vous n'apprenez rien
+      en le faisant vous-même ? 
+    </p>
+  </div>
+</div>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>
