@@ -1,0 +1,144 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 38 Jeu 5 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2038%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2038%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2038%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2038%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2038%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/5">Jeu 5</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/5/challenges/38">Epreuve 38</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Attaque par dictionnaire hors-ligne sur un SRP simplifié</h3>
+          <div class="row">
+  <div class="col-md-2">
+    S
+  </div>
+  <div class="col-md-8">
+    <pre>x = SHA256(sel|mot de passe)
+    v = g**x % n</pre>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    C-&gt;S
+  </div>
+  <div class="col-md-8">
+    <pre>I, A = g**a % n</pre>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    S-&gt;C
+  </div>
+  <div class="col-md-8">
+    <pre>sel, B = g**b % n, u = nombre aléatoire 128-bit</pre>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    C
+  </div>
+  <div class="col-md-8">
+    <pre>x = SHA256(sel|mot de passe)
+    S = B**(a + ux) % n
+    K = SHA256(S)</pre>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    S
+  </div>
+  <div class="col-md-8">
+    <pre>S = (A * v ** u)**b % n
+    K = SHA256(S)</pre>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    C-&gt;S
+  </div>
+  <div class="col-md-8">
+    Envoyer HMAC-SHA256(K, sel)
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    S-&gt;C
+  </div>
+  <div class="col-md-8">
+    Envoyer "OK" si le HMAC-SHA256(K, sel) est valide
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2"></div>
+        <div class="col-md-10">
+    <p>
+      Note : dans ce protocole, le paramètre "B" du serveur ne dépend pas
+      du mot de passe (c'est juste une clef publique Diffie Hellman).
+    </p>
+    <p>
+      Vérifiez que le protocole fonctionne quand on lui donne un mot de
+      passe valide.
+    </p>
+    <p>
+      Maintenant, faites fonctionner le protocole comme un attaquant MITM
+      Faites-vous passer pour le serveur, et utilisez des valeurs arbitaires
+      pour b, B, U et le sel.
+    </p>
+    <p>
+      Cassez le mot de passe depuis le A du HMAC-SHA256(K, sel).
+    </p>
+  </div>
+</div>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

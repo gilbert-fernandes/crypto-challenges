@@ -1,0 +1,120 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 33 Jeu 5 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2033%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2033%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2033%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2033%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2033%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/5">Jeu 5</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/5/challenges/33">Epreuve 33</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Implémenter Diffie-Hellman</h3>
+          <p>
+  Pour l'un des algorithmes les plus importants en cryptographie, cet exercice
+  ne peut être plus facile.
+</p>
+<p>
+  Réglez une variable "p" à 37, et une variable "g" à 5. Cet algorithme est
+  tellement facile que je ne vais même pas l'expliquer, mais seulement
+  ce que je fais.
+</p>
+<p>
+  Générer une valeur "a" aléatoire modulo 37. Puis générer "A" qui est
+  "g" puissance "a" puissance 37 : A = (g ** a) % p
+</p>
+<p>
+  Faire la même chose pour "b" et "B".
+</p>
+<p>
+  "A" et "B" sont les clefs publiques. Générer une clef de session à l'aide
+  de ces deux valeurs; "s" contient "B" puissance "a" modulo 37 : s = (B ** a) % p
+</p>
+<p>
+  Faire la même chose avec A**b et vérifier qu'on obtient le même "s".
+</p>
+<p>
+  Pour transformer "s" en clef, on en fait le hacahge pour obtenir
+  128 bits qui serviront de clef (ou SHA 256 pour créer une clef pour
+  chiffrer, et une clef MAC).
+</p>
+<p>
+  Ok, c'était amusant, maintenant il faut refaire l'exercice avec de
+  vrais chiffres, comme dans le monde réel. Voici les paramètres
+  qui sont recommandés par le NIST :
+</p>
+<pre>p:
+ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024
+e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd
+3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec
+6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f
+24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361
+c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552
+bb9ed529077096966d670c354e4abc9804f1746c08ca237327fff
+fffffffffffff
+ 
+g: 2</pre>
+<p>
+  Très facile à faire en Python ou Ruby ou dans tout langage de haut
+  niveau qui réalise une auto-promotion des nombres à précision fixe
+  en nombres à précision arbitraire (les "bignum"). Mais ce n'est
+  "difficile" nulle part.
+</p>
+<p>
+  Note : vous devrez écrire votre propre fonction modulo-exponentielle
+  (ce sont des mathématiques faciles, ne vous inquiétez pas) car si vous
+  réalisez des "a" puissance (nombre 1024 bits) vous ferez planter votre
+  librairie bignum. On peut trouver des routines modulo-exponentielles
+  sur Rosetta Code pour la plupart des langages.
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

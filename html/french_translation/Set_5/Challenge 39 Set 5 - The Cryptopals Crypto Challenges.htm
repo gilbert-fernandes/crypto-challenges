@@ -1,0 +1,129 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 39 Jeu 5 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2039%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2039%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2039%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2039%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2039%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/5">Jeu 5</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/5/challenges/39">Epreuve 39</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Implémenter le RSA</h3>
+          <p>
+  Il y a deux choses ennuyeuses quand on implémente le RSA.
+  Les deux impliquent la génération de clef; le chiffrement et
+  déchiffrement RSA est trivial en comparaison.
+</p>
+<p>
+  D'abord, vous devez générer des nombres premiers aléatoires. Il n'est
+  pas possible de convenir à l'avance d'un nombre premier, comme on le
+  fait en Diffie-Hellman. Vous pouvez écrire cet algorithme vous-même,
+  mais j'avoue avoir triché et utilisé la librairie BN de OpenSSL pour
+  le faire.
+</p>
+<p>
+  Ensuite, vous devez programmer une opération "invmod" (inversion de
+  multiplication), une opération qui ne sera pas disponible de base
+  dans votre langage. L'algorithme ne va prendre que quelques lignes,
+  mais à chaque fois j'y passe une bonne heure avant de le faire
+  fonctionner.
+</p>
+<p>
+  Je vous recommande de ne pas perdre votre temps avec primegen, mais
+  prenez le temps de concevoir votre propre EGCD, et faire fonctionner
+  votre algorithme invmod.
+</p>
+<p>
+  Maintenant :
+</p>
+<ul>
+  <li>
+    Générez deux nombres premiers aléatoires. Commencez par de petits
+    nombres au début, en les prenant depuis une liste de nombre
+    premiers par exemple. Appelez ces nombres "p" et "q".
+  </li>
+  <li>
+    On pose n égal à p * q. Vos mathématiques RSA seront modulo n.
+  </li>
+  <li>
+    On pose et égal à (p-1)*(q-1) (le "totient". Vous aurez besoin de
+    cette valeur pour générer la clef. 
+  </li>
+  <li>
+    On pose e égal à 3.
+  </li>
+  <li>
+    Calculez d = invmod(e, et)
+    Pour tester, invmod(17, 3120) produit 2753.
+  </li>
+  <li>
+    Votre clef publique est [e, n]. Votre clef privée est [d, n].
+  </li>
+  <li>
+    Pour chiffrer : c = m**e%n
+    Pour déchiffrer : m = c**d%n
+  </li>
+  <li>
+    Testez ceci avec un nombre comme par exemple "42"
+  </li>
+  <li>
+    Répétez l'opération avec des premiers bignum (conservez e = 3)
+  </li>
+</ul>
+<p>
+  Enfin, chiffez une chaîne, et faites quelque chose de croustillant,
+  comme de convertir la chaîne en hexadécimal, de la faire précéder
+  de "0x" au début et faites-en un nombre. Les mathématiques ne
+  se soucient pas des chaînes que vous allez produire.
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

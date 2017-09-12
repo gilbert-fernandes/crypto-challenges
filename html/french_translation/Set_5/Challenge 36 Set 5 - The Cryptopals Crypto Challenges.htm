@@ -1,0 +1,128 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 36 Jeu 5 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2036%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2036%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2036%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2036%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2036%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/5">Jeu 5</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/5/challenges/36">Epreuve 36</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Implémenter un mot de passe distant sécurisé (SRP - Secure Remote Password)</h3>
+          <p>
+  Pour comprendre les SRP, il faut partie de la génération d'une clef AES depuis
+  Diffie-Hellman. Ensuite, observez comme il est possilble de réaliser l'opération
+  "opposée" pour générer une valeur numérique à partir d'un hachage.Ensuite :
+</p>
+<p>
+  Remplacez A par B avec C et S (client &amp; serveur)
+</p>
+<dt>C &amp; S</dt>
+<dd>Se mettre d'accord sur N=[NIST Prime], g=2, k=3, I (email), P (mot de passe)</dd>
+<dt>S</dt>
+<dd>
+  <ol>
+    <li>Générer un sel sous la forme d'un entier aléatoire</li>
+    <li>Générer une chaîne xH=SHA256(sel|mot de passe)</li>
+    <li>Convertir xH vers un entier x quelque chose (utilisez 0x dans hexdigest)</li>
+    <li>Générer v=g**x % N</li>
+    <li>Tout sauvegarder sauf x, xH</li>
+  </ol>
+</dd>
+<dt>C-&gt;S</dt>
+<dd>Envoyer I, A=g**a % N ("à la" Diffie-Hellman)</dd>
+<dt>S-&gt;C</dt>
+<dd>Envoyer le sel, B=kv + g**b % N</dd>
+<dt>S, C</dt>
+<dd>Calculer la chaîne uH = SHA256(A|B), u = entier de uH</dd>
+<dt>C</dt>
+<dd>
+  <ol>
+    <li>Générer la chaîne xH=SHA256(sel|mot de passe)</li>
+    <li>Convertir xH en entier x quelque chose (utilisez 0x dans hexdigest)</li>
+    <li>Générer S = (B - k * g**x)**(a + u * x) % N</li>
+    <li>Générer K = SHA256(S)</li>
+  </ol>
+</dd>
+<dt>S</dt>
+<dd>
+  <ol>
+    <li>Générer S = (A * v**u) ** b % N</li>
+    <li>Générer K = SHA256(S)</li>
+  </ol>
+</dd>
+<dt>C-&gt;S</dt>
+<dd>Envoyer HMAC-SHA256(K, sel)</dd>
+<dt>S-&gt;C</dt>
+<dd>Envoyer "OK" si le HMAC-SHA256(K, salt) est valide</dd>
+<p></p>
+<p>
+  Vous allez vouloir faire tout ceci avec un REPL quelconque; cela pourrait
+  demander plusieurs tentatives.
+</p>
+<p>
+  Peu importe la manière que vous allez utiliser pour passer d'un entier
+  vers une chaîne, ou d'une chaîne vers un entier (où les choses vont aller
+  dans ou en-dehors de SHA256) tant que vous obtenez toujours la même
+  conversion dans un sens comme dans l'autre. Pour ma part j'ai utilisé
+  la représentation décimale du code ASCII injectée dans un SHA256, puis
+  la conversion du hachage vers en entier lors du traitement de la sortie.
+</p>
+<p>
+  C'est basiquement un Diffie Hellman avec une injection du mot de passe
+  au sein de la clef publique. Le serveur prend également une mesure
+  supplémentaire pour ne pas stocker un équivalent de mot de passe
+  facilement cassable.
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

@@ -1,0 +1,109 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 40 Jeu 5 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2040%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2040%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2040%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2040%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2040%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/5">Jeu 5</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/5/challenges/40">Epreuve 40</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Implémenter une attaque RSA broadcast avec E=3</h3>
+          <p>
+  Supposez que vous êtes un développeur Javascript. 
+  C'est à dire que vous utilisez une implémentation naïve de RSA
+  que vous utilisez sans remplissage.
+</p>
+<p>
+  Supposons qu'on vous oblige à chiffrer le même texte clair trois
+  fois de suite, à l'aide de trois clef publiques différentes.
+  Vous le pouvez; c'est déjà arrivé.
+</p>
+<p>
+  Il est alors triviallement possible à un attaquant de déchiffrer
+  votre message, en :
+</p>
+<ol>
+  <li>Capturant les trois textes chiffrés et les clefs publiques correspondantes</li>
+  <li>
+    Utilisez le CRT pour résoudre le nombre réprésenté par les trois
+    textes chiffrés (qui sont des résidus modulo leurs clefs publiques
+    respectives).
+  </li>
+  <li>Prenez la racine carrée du nombre obtenu</li>
+</ol>
+<p>
+  Le CRT dit que vous pouvez prendre tout nombre et le représenter
+  comme la combinaison d'une série de résidus modulo une série de
+  modulos. Dans le cas des trois résidus, vous avez :
+</p>
+<pre>résultat =
+  (c_0 * m_s_0 * invmod(m_s_0, n_0)) +
+  (c_1 * m_s_1 * invmod(m_s_1, n_1)) +
+  (c_2 * m_s_2 * invmod(m_s_2, n_2)) mod N_012</pre>
+<p>
+  où :
+</p>
+<pre> c_0, c_1, c_2 sont les trois résidus modulo n_0, n_1, n_2
+
+ m_s_n (pour n dans 0, 1, 2) le produit des modulo
+ A L'EXCEPTION de n_n --- ie, m_s_1 est n_0 * n_2
+
+ N_012 est le produit de ces trois modulo</pre>
+<p>
+  Pour déchiffrer du RSA à l'aide d'une simple racine cubique,
+  sautez la dernière étape finale de modulo; utilisez directement
+  le résultat accumulé et appliquez une racine cubique.
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

@@ -1,0 +1,129 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 34 Jeu 5 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2034%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2034%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2034%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2034%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2034%20Set%205%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/5">Jeu 5</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/5/challenges/34">Epreuve 34</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Implémenter une attaque MITM à clef fixe sur Diffie-Hellman avec injection de paramètre</h3>
+          <p>
+  Utilisez le code que vous venez de créer pour construire un protocole et un bot "echo".
+  Vous n'avez pas besoin de faire la partie réseau; il suffit de le simuler. Le protocole
+  est :
+</p>
+<dl>
+  <dt>
+    A-&gt;B
+  </dt>
+  <dd>Envoyer "p", "g", "A"</dd>
+  <dt>
+    B-&gt;A
+  </dt>
+  <dd>Envoyer "B"</dd>
+  <dt>
+    A-&gt;B
+  </dt>
+  <dd>Envoyer AES-CBC(SHA1(s)[0:16], iv=random(16), msg) + iv</dd>
+  <dt>
+    B-&gt;A
+  </dt>
+  <dd>Envoyer AES-CBC(SHA1(s)[0:16], iv=random(16), A's msg) + iv</dd>
+</dl>
+<p>
+  (en d'autres mots, dérivez une clef AES depuis DH à l'aide de SHA1,
+  utilisez-la dans les deux directions, et faites du CBC avec des IV
+  aléatoires ajoutés avant ou après le message).
+</p>
+<p>
+  Maintenant, implémentez l'attaque MITM :
+</p>
+<dl>
+  <dt>A-&gt;M</dt>
+  <dd>Envoyer "p", "g", "A"</dd>
+  <dt>M-&gt;B</dt>
+  <dd>Envoyer "p", "g", "p"</dd>
+  <dt>B-&gt;M</dt>
+  <dd>Envoyer "B"</dd>
+  <dt>M-&gt;A</dt>
+  <dd>Envoyer "p"</dd>
+  <dt>A-&gt;M</dt>
+  <dd>Envoyer AES-CBC(SHA1(s)[0:16], iv=random(16), msg) + iv</dd>
+  <dt>M-&gt;B</dt>
+  <dd>Le relayer à B</dd>
+  <dt>B-&gt;M</dt>
+  <dd>Envoyer AES-CBC(SHA1(s)[0:16], iv=random(16), A's msg) + iv</dd>
+  <dt>M-&gt;A</dt>
+  <dd>Le relayer à A</dd>
+</dl>
+<p>
+  M doit être à même de déchiffrer les messages. "A" et "B" au sein du
+  protocole - les clefs publiques, transmises par réseau - ont été échangées
+  avec "p". Réalisez la partie mathématique DH rapidement pour voir ce
+  que cela produit sur la prédictabilité de la clef.
+</p>
+<p>
+  Déchiffez les messages depuis le point de vue de M au fur et à mesure
+  qu'ils sont échangés.
+</p>
+<p>
+  Note : vous n'avez pas besoin d'injecter des paramètres falsifiés pour
+  faire fonctionner cette attaque; vous devez uniquement générer Ma, MA,
+  Mb et MB en tant que paramètres valides DH pour réaliser une attaque
+  MITM. L'attaque par injection de paramètres sera toutefois utile
+  par la suite.
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>
