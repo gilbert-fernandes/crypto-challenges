@@ -1,0 +1,166 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 53 Jeu 7 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2053%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2053%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2053%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2053%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2053%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/7">Jeu 7</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/7/challenges/53">Epreuve 53</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Messages sacrifiables de Kelsey et Schneier</h3>
+          <p>
+  L'une des techniques pour estimer la valeur d'une fonction
+  cryptographique de hachage est de tester sa résistance à des
+  attaques par seconde pré-image. Ce qui signifie que si je vous
+  donne x et y tels que H(x) = y vous devriez avoir beaucoup de mal
+  à trouver un x' tel que H(x') = H(x) = y.
+</p>
+<p>
+  A quel point est-ce difficile ? Difficile comme une recherche
+  exhaustive par force brute. Pour une fonction de hachage 2^b
+  on veut des attaques par seconde pré-image dont le coût est de
+  2^b opérations.
+</p>
+<p>
+  Il s'avère que ce n'est pas le cas pour de très longs
+  messages.
+</p>
+<p>
+  Considérons le problème que nous essayons de résoudre : nous voulons
+  trouver un message provoquant une collision avec H(x) mais seulement
+  dans le tout dernier bloc. Il existe donc une grande quantité de
+  blocs intermédiaires, chacun possédant un état intermédiaire
+  de hachage.
+</p>
+<p>
+  Et s'il nous était possible de provoquer une collision dans l'un
+  de ces blocs intermédiaires ? Il nous serait alors possible de
+  faire suivre à ce dernier tous les blocs du message originel
+  pour reproduire le message H(x) d'origine.
+</p>
+<p>
+  Mais nous ne pouvons pas facilement le faire, car le remplissage
+  va faire échouer notre tentative.
+</p>
+<p>
+  Ce dont nous avons besoin sont des <i>messages que l'on peut
+  sacrifier</i>
+</p>
+<p>
+  Dans le dernier exercice nous avons utilisé des collisions multiples
+  pour produire 2^n messages de collision pour une difficulté de
+  n*2^(b/2). Nous pouvons utiliser le même principe pour produire
+  un jeu de messages de taille (k, k + 2^k -1) pour un k donné.
+</p>
+<p>
+  Voici comment faire :
+</p>
+<ul>
+  <li>
+    En partant de l'état initial de la fonction de hachage, trouvez
+    une collision entre un message contenu en un bloc, et un message
+    composé de 2^(k-1)+1 blocs. NE hachez PAS la totalité du message
+    à chaque fois. Choisissez 2^(k-1) blocs sans intérêt, réalisez
+    leur hachage. Ensuite, il faut uniquement se concentrer sur le
+    dernier bloc.
+  </li>
+  <li>
+    Récupérez l'état de sortie de la première étape. Utilisez-le
+    comme votre nouvel état initial et trouvez une nouvelle
+    collision entre votre message d'un bloc et votre message
+    contenant 2^(k-2)+1 blocs.
+  </li>
+  <li>
+    Repétez ces opérations k fois de suite. Votre dernière collision
+    devrait se trouver entre le message d'un bloc et un message de
+    2^0+1 blocs : 2 blocs.
+  </li>
+</ul>
+<p>
+  Vous pouvez maintenant prendre un message de toute longueur dans
+  (k, k + 2^k - 1) blocs en choisissant le message approprié
+  (court ou long) pour chaque paire.
+</p>
+<p>
+  Maintenant nous sommes capables d'attaquer un long message M
+  de 2^k blocs.
+</p>
+<ol>
+  <li>
+    Générez un message sacrifiable de longueur (k, k + 2^k - 1)
+    en utilisant la stratégie ci-dessus.
+  </li>
+  <li>
+    Hachez M et générer une table de correspondance entre les états de
+    hachage et les indices de bloc qui leurs correspondent.
+  </li>
+  <li>
+    Depuis l'état final de votre message à sacrifier, trouvez un
+    "pont" qui n'occupe qu'un seul bloc vers l'état intermédiaire
+    dans votre table de correspondance. Notez avec soin l'indice i
+    qui lui correspond.
+  </li>
+  <li>
+    Utilisez votre message sacrifiable pour générer un préfixe
+    de la bonne longueur pour obtenir
+    <i>len(prefix || bridge || M[i..])</i> = <i>len(M)</i>.
+  </li>
+</ol>
+<p>
+  Le remplissage du bloc final devrait maintenant être correct,
+  et votre falsification doit produire un hachage de la même
+  valeur que M.
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

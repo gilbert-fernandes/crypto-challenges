@@ -1,0 +1,156 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 56 Jeu 7 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2056%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2056%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2056%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2056%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2056%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/7">Jeu 7</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/7/challenges/56">Epreuve 56</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Partialité RC4 à octet unique</h3>
+          <p>
+  Le RC4 est un chiffrement de flux connu pour être utilisé au sein
+  de nombreux protocoles comme TLS, WPA, RDP, &amp;c.
+</p>
+<p>
+  C'est un chiffrement qui est également sensiblement vulnérable
+  aux partialités à un octet, en particulier dans les étapes
+  au début du keystream. Qu'est ce que cela signifie ?
+</p>
+<p>
+  Simplement : que pour une position donnée du keystream, certains
+  octets ont une probabilité plus (ou moins) importante de faire leur
+  apparition. Avec assez de chiffrements pour un texte clair donné,
+  un attaquant peut utiliser ces partialités pour récupérer la totalité
+  du texte clair entier.
+</p>
+<p>
+  Cherchez en ligne le papier
+  <a href="http://lmgtfy.com/?q=On+the+Security+of+RC4+in+TLS+and+WPA">
+    "On the Security of RC4 in TLS and WPA".
+  </a>
+  ce site va rapidement devenir votre premier choix pour vous
+  informer sur le RC4.
+</p>
+<p>
+  Cliquez sur la droite sur "RC4 biases".
+</p>
+<p>
+  Ce sont des phrases de chaque biais d'un octet (un par page).
+  Remarquez en particulier les monstrueuses anomalies sur z16,
+  z32, z48, etc. (Note : les données sont ici indexées sur 1,
+  donc z16 = keystream[15]).
+</p>
+<p>
+  A quel point ces partialités sont-elles utiles ?
+</p>
+<p>
+  Cliquez sur le papier de recherche, et descendez plus bas
+  jusqu'à parvenir aux résultats des simulations. Le papier est
+  si bon que nous pensons que vous devez le lire avec soin en
+  intégralité. Nous allons commencer par les pointes aux itérations
+  2^26 mais nos chances d'obtenir les premiers 256 octets va approcher
+  1 à mesure que nous atteignons 2^32.
+</p>
+<p>
+  Il y a deux manières de trier profit de ces partialités. La première
+  méthode est assez simple :
+</p>
+<ol>
+  <li>Obtenez une fine connaisance des partialités du keystream.</li>
+  <li>Chiffrez un texte clair inconnu 2^30 fois à l'aide de clefs différentes.</li>
+  <li>Comparez les partialités des textes chiffrés vis à vis des partialités du keystream.</li>
+</ol>
+<p>
+  Réaliser ceci requiert une profonde connaissance des partialités de
+  chaque octet du keystream. Mais on peut s'en sortir assez bien
+  avec juste quelques partialités s'il est possible d'avoir un peu
+  de contrôle sur le texte clair.
+</p>
+<p>
+  Comment ? En utilisant les connaissances provenant d'un seul
+  biais comme un "trou de serrure" qui nous permet de voir un
+  petit bout du texte clair.
+</p>
+<p>
+  Décodez ce secret :
+</p>
+<pre>QkUgU1VSRSBUTyBEUklOSyBZT1VSIE9WQUxUSU5F</pre>
+<p>
+  Disons qu'il contient un cookie. Ne regardez pas sa vraie valeur !
+</p>
+<p>
+  Utilisez-le pour construire l'oracle de chiffrement suivant :
+</p>
+<pre>RC4(votre-demande || cookie, clef-aléatoire)</pre>
+<p>
+  Utilisez une clef fraiche de 128 bits à chaque appel de l'oracle.
+</p>
+<p>
+  Imaginez ce scénario : vous voulez dérober le cookie sécurisé
+  d'un utilisateur. Vous pouvez générer des requêtes à volonté
+  (depuis un plugin sous votre contrôle ou équivalent par exemple)
+  et vous avez une vision sur le trafic réseau échangé (certes, ce
+  n'est pas très réaliste, le cookie ne serait jamais situé au début
+  de la requête, mais ce n'est qu'un exemple).
+</p>
+<p>
+  Vous pouvez contrôler la position du cookie en demandant "/", "/A",
+  "/AA", etc.
+</p>
+<p>
+  Construisez des listes de partialités pour des paires d'indices
+  choisis (z16 et z32 sont de bons choix) puis déchiffrez ce cookie.
+</p>
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

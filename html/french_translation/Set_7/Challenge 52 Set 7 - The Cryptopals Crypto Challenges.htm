@@ -1,0 +1,175 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 52 Jeu 7 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2052%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2052%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2052%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2052%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2052%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/7">Jeu 7</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/7/challenges/52">Epreuve 52</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Multi-collisions sur fonction de hachage à itération</h3>
+          <p>
+  Pendant que nous sommes sur le sujet des fonctions de hachage...
+</p>
+<p>
+  La fonction principale que l'on veut d'une fonction de hachage
+  est la résistance aux collisions. C'est à dire qu'il doit être
+  difficile de générer des collisions et qu'il doit être <b>vraiment</b>
+  difficile de générer ce qui produit un hachage fourni
+  (<i>ce qu'on appelle</i> une pré-image).
+</p>
+<p>
+  Les fonctions de hachage par itération ont un problème :
+  la difficulét pour générer une <i>importante</i> quantité de collisions
+  évolue de manière sous-linéaire.
+</p>
+<p>
+  Qu'est-ce qu'une fontion de hachage par itération ? Ce dont il
+  s'agit ici est une construction de Merkle-Damgard. Elle ressemble
+  à ceci :
+</p>
+<pre>function MD(M, H, C):
+  pour M[i] dans pad(M):
+    H := C(M[i], H)
+  renvoyer H</pre>
+<p>
+  Pour un message M, d'état initial H, et la fonction de compression C.
+</p>
+<p>
+  Cette construction doit vous sembler très similaire. C'est parce que
+  le SHA1 et MD4 sont dans la même catégorie. Le bon côté des choses
+  c'est que vous pouvez utiliser cette formule opur créer une fonction 
+  de hachage reposant sur des shift, en partant des primitives
+  cryptographiques que vous connaissez déjà (par exemple, C=AES-128).
+</p>
+<p>
+  Retour aux choses sérieuses : le coût des collisions augmente
+  de manière sous-linéaire. Cela veut dire quoi ? Que s'il est
+  possible de trouver une collision, il est donc possible d'en trouver
+  beaucoup.
+</p>
+<p>
+  Comment ? Pour un état H donné, trouvez deux blocs produisant
+  une collision. Prenez le hachage résultant de cette collision
+  comme votre nouveau H et répétez l'opération. Gardez à l'esprit
+  qu'à chaque itération vous pouvez doubler vos collisions
+  en modifiant l'un des deux blocs à chaque fois pendant l'itération.
+</p>
+<p>
+  Ce qui signifie que pour trouver deux collisions il faut un
+  travail d'environ 2^(b/2) où b est la taille en bits de la fonction
+  de hachage. Donc trouver 2^n messages produisant des collisions
+  demande au maximum un travail de n*2^(b/2)
+</p>
+<p>
+  Maintenant, testons le tout. D'abord, construisez votre propre
+  fonction de hachage MD. Nous allons devoir générer un grand nombre
+  de collisions, mais ne vous épuisez pas. En fait, notre objectif
+  est de mal le faire. Voici comment :
+</p>
+<ol>
+  <li>Utilisez un chiffrement par flux rapide poru C.</li>
+  <li>
+    Utilisez un H tout petit. Je vous promet de ne rien dire à personne
+    s'il ne fait que 16 bits. Choisissez un H comme point de départ.
+  </li>
+  <li>
+    H va être la clef d'entrée et le bloc de sortie depuis C.
+    Ce qui signifie que vous allez devoir le remplir en entrée,
+    et laisser tomber des bits en sortie.
+  </li>
+</ol>
+<p>
+  Maintenant, écrivez une fonction f(n) qui va générer 2^n collisions
+  avec cette fonction de hachage.
+</p>
+<p>
+  Pourquoi est-ce important ? Et bien la raison principale est qu'il
+  a été tenté de renforcer les fonctions de hachage en combinant
+  en cascade celles-ci. Voici ce que je veux dire :
+</p>
+<ol>
+  <li>Prenez des fonctions de hachage f et g.</li>
+  <li>Construisez h tel que h(x) = f(x) || g(x).</li>
+</ol>
+<p>
+  L'idée est que si les collisions dans f coûtent 2^(b1/2) et les
+  collisions dans g coûtent 2^(b2/2) alors on pourrait croire que
+  la combinaison des deux va coûter 2^((b1+b2)/2).
+</p>
+<p>
+  Mais nous savons que ce n'est pas vrai !
+</p>
+<p>
+  Voici l'idée :
+</p>
+<ol>
+  <li>Utilisez une fonction de hachage "peu onéreuse" qu'on appelle f</li>
+  <li>Générez 2^(b2/2) messages de collision dans f</li>
+  <li>Il y a de bonnes chances pour que votre jeu de messages produise une collision dans g</li>
+  <li>Trouvez cette collision</li>
+</ol>
+<p>
+  Et si cela ne fonctionne pas, continuez à générer des collisions
+  peu onéreuses jusqu'à en trouver.
+</p>
+<p>
+  Prouvez-le en construisant une fonction de hachage plus coûteuse en
+  ressources (mais pas <i>trop</i> coûteuse) que vous allez combiner
+  à votre fonction existante. Trouvez une paire de collisions sous
+  la combinaison de ces deux fonctions. Comptabilisez le nombre
+  total d'appels à la fonction de collision.
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

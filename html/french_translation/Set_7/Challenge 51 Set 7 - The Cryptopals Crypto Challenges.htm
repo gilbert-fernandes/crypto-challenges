@@ -1,0 +1,160 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 51 Jeu 7 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2051%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2051%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2051%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2051%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2051%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/7">Jeu 7</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/7/challenges/51">Epreuve 51</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Attaques par canal auxiliaire à ratio de compression</h3>
+          <p>
+  Les échanges sur Internet sont souvent compressés afin de préserver la
+  bande passante. Jusqu'à il y a peu, ceci comprenait les en-têtes HTTPS
+  et cela concerne toujours le contenu des réponses.
+</p>
+<p>
+  Pourquoi est-ce important ?
+</p>
+<p>
+  Et bien, si vous êtes un attaquant avec :
+</p>
+<ol>
+  <li>Une connaissance partielle du texte clair <i>et</i></li>
+  <li>Un contrôle partiel du texte clair <i>et</i></li>
+  <li>Dispose d'un accès à l'oracle de compression</li>
+</ol>
+<p>
+  Vous aurez alors de bonne chances de pouvoir récupérer tout le
+  texte clair qui vous manque.
+</p>
+<p>
+  Qu'est-ce qu'un oracle de compression ? C'est un mécanisme à qui
+  on fournit des données, et il renvoie la longueur de la sortie
+  qui sera obtenue si elle est compressée, et cela permet donc
+  d'estimer la qualité de la compression.
+</p>
+<p>
+  Cela ressemble aux attaques temporelles que nous avons déjà
+  implémentées dans le jeu 4, mais ici nous allons en plus tirer
+  avantage de canaux auxiliaires accidentels, plutôt que d'attaquer
+  directement le mécanisme cryptographique lui même.
+</p>
+<p>
+  Scénario : vous élaborez une attaque MITM où votre objectif est
+  de dérober des cookies de session sécurisés. Vous avez injecté
+  un contenu malicieux qui vous permet de générer des requêtes
+  à volonté et de les observer pendant leur transit (les détails
+  ne sont pas importants, jouez le jeu).
+</p>
+<p>
+  Allons! Ecrivez cet oracle :
+</p>
+<pre>oracle(P) -&gt; length(encrypt(compress(format_request(P))))</pre>
+<p>
+  Formattez la requête comme suit :
+</p>
+<pre>POST / HTTP/1.1
+Host: hapless.com
+Cookie: sessionid=TmV2ZXIgcmV2ZWFsIHRoZSBXdS1UYW5nIFNlY3JldCE=
+Content-Length: ((len(P)))
+((P))</pre>
+<p>
+  (on suppose que l'ID de session vous est visible : vous êtes l'attaquant)
+</p>
+<p>
+  Utilisez zlib ou un équivalent en compression.
+</p>
+<p>
+  Le chiffrement... n'a aucune importance ici, mais faisons les choses
+  correctement. Utilisez un chiffrement de flux : carte blanche.
+  Utilisez une clef et IV aléatoires à chaque appel de l'oracle.
+</p>
+<p>
+  Puis, renvoyez la longueur en octets qui serait obtenue.
+</p>
+<p>
+  Maintenant, l'idée est de faire fuiter de l'information en utilisant
+  à votre avantage la librairie de compression. Pouvoir faire fuiter
+  des données du type "sessionid=T" qui vont produire des données un
+  peu mieux compressées que, par exemple, "sessionid=S".
+</p>
+<p>
+  Un facteur va toutefois compliquer les choses. L'algorithme
+  DEFLATE opère sur des bits individuels, mais la longueur finale
+  du message sera exprimée en octets. Même si vous parvenez à
+  mieux compresser les données, le gain pourrait ne pas être supérieur
+  à un octet. Et c'est un problème.
+</p>
+<p>
+  Vous pouvez aussi obtenir de faux positifs accidentels.
+</p>
+<p>
+  Mais ne vous inquiétez pas! J'ai une confiance totale en vous.
+</p>
+<p>
+  Utilisez l'oracle de compression pour extraire l'ID de session.
+</p>
+<p>
+  Je patiente.
+</p>
+<p>
+  C'est fait ? Parfait !
+</p>
+<p>
+  Maintenant échangez votre chiffrement de flux pour le CBC.
+  Et recommencez.
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

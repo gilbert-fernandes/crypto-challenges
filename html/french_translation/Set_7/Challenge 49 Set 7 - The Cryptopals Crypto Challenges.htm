@@ -1,0 +1,196 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 49 Jeu 7 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2049%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2049%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2049%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2049%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2049%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/7">Jeu 7</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/7/challenges/49">Epreuve 49</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Falsification de message CBC-MAC</h3>
+          <p>
+  Let's talk about CBC-MAC.
+</p>
+<p>
+  Le CBC-MAC fonctionne comme suit :
+</p>
+<ol>
+  <li>Prenez le texte clair P.</li>
+  <li>Chiffrez P sous CBC avec la clef K, produisant le texte chiffré C</li>
+  <li>Jettez tout C sauf le dernier bloc C[n].</li>
+  <li>C[n] est le MAC.</li>
+</ol>
+<p>
+  Supposons que nous avons une application bancaire, et qu'elle traite
+  les demandes utilisateur en parlant avec l'API d'un serveur au-travers
+  du réseau. Chaque requête ressemble à ceci :
+</p>
+<pre>message || IV || MAC</pre>
+<p>
+  Le message ressemble à ceci :
+</p>
+<pre>from=#{from_id}&amp;to=#{to_id}&amp;amount=#{amount}</pre>
+<p>
+  Maintenant, écrivez un serveur d'API et une frontale Web pour
+  ce dernier (Note : pas besoin d'être ambitieux jusqu'à aller écrire
+  un serveur Web avec son application intégrée, il est tout à fait
+  acceptable de faire du très basique ici). Le client et le serveur
+  doivent partager une clef secrète K et vérifier les messages.
+</p>
+<p>
+  L'API du serveur doit accepter les messages, vérifier les signatures
+  et traiter chaque transaction si le MAC est valide. Cette API doit
+  également être publiquement accessible - l'attaquant doit pouvoir
+  soumettre des messages librement afin de pouvoir falsifier des 
+  MAC valides.
+</p>
+<p>
+  Le client web doit permettre à l'attaquant de générer des messages
+  valides pour les comptes sous son contrôle (vous pouvez ajouter
+  une couche de contrôle sur les paramètres injectés). Supposez que
+  l'attaquant est en position de capturer et inspecter tous les
+  messages échangés entre le client et l'API du serveur.
+</p>
+<p>
+  Une chose que nous n'avons pas discutée est le IV. Supposons que le
+  client génère un IV par message qui est transmis avec le MAC.
+  C'est comme cela que CBC fonctionne n'est-ce pas ?
+</p>
+<p>
+  Faux
+</p>
+<p>
+  Pour les messages signés par CBC-MAC, le IV contrôlé par l'attaquant
+  est un risque. Pourquoi ? Parce que cela lui donne un contrôle total
+  sur le premier bloc du message.
+</p>
+<p>
+  Utilisez ce fait pour générer un message transférant des crédits
+  galactiques de 1 Million pièce, avec pour objectif de transférer
+  cet argent du compte de la victime vers votre propre compte.
+</p>
+<p>
+  Je patiente. Prévenez-moi quand vous aurez terminé.
+</p>
+<p>
+  ... je patiente
+</p>
+<p>
+  ... je patiente
+</p>
+<p>
+  ... je patiente
+</p>
+<p>
+  Terminé , Super ! Je savais que vous en êtiez capable !
+</p>
+<p>
+  Maintenant augmentons un peu la qualité du protocole.
+</p>
+<p>
+  Comme nous le savons déjà, nous sommes supposé utiliser un IV fixe
+  avec le CBC-MAC, et c'est ce que nous allons faire. Notre IV va
+  être entièrement réglé sur 0 pour simplifier. Ce qui signifie que
+  le IV disparaît du protocole :
+</p>
+<pre>message || MAC</pre>
+<p>
+  C'est assez simple. Mais nous allons également ajuster le message.
+  Pour des raisons d'efficacité, la banque souhaite pouvoir traiter plusieurs
+  transactions à l'aide d'une seule demande. Donc le message ressemble
+  alors à ceci :
+</p>
+<pre>from=#{from_id}&amp;tx_list=#{transactions}</pre>
+<p>
+  Avec la liste de transaction formatée comme suit :
+</p>
+<pre>to:amount(;to:amount)*</pre>
+<p>
+  Mais il existe encore une faille ici : le MAC est vulnérable
+  aux attaques par extension de longueur. Comment ?
+</p>
+<p>
+  Et bien la sortie de CBC-MAC est un IV valide pour tout nouveau
+  message.
+</p>
+<p>
+  <i>"Mais le IV n'est plus sous notre contrôle !"</i>
+</p>
+<p>
+  Avec une maîtrise suffisante de CBC, on peut le falsifier.
+</p>
+<p>
+  Votre mission: capturer un message valide de votre cible.
+  Utilisez l'extension de longueur pour ajouter une transaction
+  pour faire apparaître sur le compte de l'attaquant la somme de
+  1 million de crédits galactiques.
+</p>
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">Astuce !</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      Tout ceci serait si facile si vous aviez le contrôle total
+      sur le premier bloc du message, hein ? Peut être que vous
+      pouvez le simuler.
+    </p>
+  </div>
+</div>
+<p>
+  Pou aller plus loin :
+  <i>Comment pouvez-vous modifier le protocole pour empêcher tout ceci ?</i>
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

@@ -1,0 +1,128 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 55 Jeu 7 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2055%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2055%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2055%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2055%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2055%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/7">Jeu 7</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/7/challenges/55">Epreuve 55</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Collisions MD4</h3>
+          <p>
+  MD4 est une fonction de hachage cryptographique à 128 bits. Ce qui implique
+  que le travail pour y trouver des collisions est d'environ 2^64.
+</p>
+<p>
+  Il s'avère qu'on peut faire bien mieux.
+</p>
+<p>
+  Le papier
+  <a href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;ved=0CCAQFjAA&amp;url=http%3A%2F%2Fwww.infosec.sdu.edu.cn%2Fuploadfile%2Fpapers%2FCryptanalysis%2520of%2520the%2520Hash%2520Functions%2520MD4%2520and%2520RIPEMD.pdf&amp;ei=kb8IVPGQNajksATw1YLoCA&amp;usg=AFQjCNHSIOZ1uUKTO3N5Hi33D3ZeoOyTUg&amp;sig2=-C-5Woy1HJtk7KJJwLLp-A&amp;bvm=bv.74649129,d.cWc">
+    "Cryptanalysis of the Hash Functions MD4 and RIPEMD"
+  </a>
+  par Wang et associés détaille une attaque cryptanalytique qui permet de
+  trouver des collisions en 2^8 ou moins.
+</p>
+<p>
+  Avec un bloc de message donné M, Wang élabore une stratégie qui peremt
+  de trouver un bloc soeur M' qui ne diffère que de quelques bits, et
+  qui permet de créer une collision. Ceci fonctionne si une série de
+  conditions sont respectées pour M.
+</p>
+<p>
+  Quelles sont ces conditions ? De simples égalités de bits au sein
+  de l'état intermédiarie de la fonction de hachage, par exemple
+  a[1][6] = b[0][6] ce qui se lit comme "le sixième bit (indexé
+  depuis 0) de a[1] doit être égal au sixième bit de b[0]
+  (soit que la première mise à jour de a soit égale à la valeur
+  initiale de b).
+</p>
+<p>
+  Il s'avère qu'il est assez facile de forcer ces conditions.
+  Pour le comprendre, il faut regarder la première (des trois) rondes
+  de la fonction de compression du MD4. Dans cette ronde, on réalisé
+  une itération de chaque mot dans le bloc de message de manière
+  séquentielle, et on le mélange à l'état. On peut donc faire en
+  sorte que pour toutes les premiers rondes, les conditions soient
+  atteintes en s'assurant que :
+</p>
+<pre># calculer la nouvelle valeur pour a[1] normalement
+a[1] = (a[0] + f(b[0], c[0], d[0]) + m[0]).lrot(3)
+
+# modifier le résultat pour forcer l'égalité de bit
+a[1] ^= ((a[1][6] ^ b[0][6]) &lt;&lt; 6)
+
+# par l'algèbre corriger le premier bloc du message
+m[0] = a[1].rrot(3) - a[0] - f(b[0], c[0], d[0])</pre>
+<p>
+  En s'assurant que toutes les premières rondes satisfont aux
+  conditions nous place en situation idéale pour générer des
+  collisions, mais nous pouvons faire mieux en corrigeant
+  certaines des conditions supplémentaires dans la seconde
+  ronde. C'est plus compliqué car nous devons nous assurer
+  que les altérations de la première ronde sont préservées.
+</p>
+<p>
+  Après avoir "massé" dans le sens du poil le message M, on peut
+  simplement générer M' en inversant certains bits puis tester
+  si une collision est présente. Une collision n'est pas garantie
+  puisque nous n'avons pas verrouillé chaque condition. Mais
+  nous pouvons en avoir assez en quantité pour trouver une paire
+  (M, M') sans trop de difficulté.
+</p>
+<p>
+  Implémentez l'attaque de Wang.
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

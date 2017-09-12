@@ -1,0 +1,111 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 50 Jeu 7 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2050%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2050%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2050%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2050%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2050%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/7">Jeu 7</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/7/challenges/50">Epreuve 50</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Hachage via CBC-MAC</h3>
+          <p>
+  Il arrive parfois que les gens tente d'utiliser CBC-MAC comme un hachage.
+</p>
+<p>
+  C'est une mauvaise idée. Matt Green explique pourquoi :
+</p>
+<blockquote>
+  Pour résumer : les fonctions cryptographiques de hachage sont des
+  fonctions publiques (ie sans clef secrète) et qui ont pour propriété
+  de résister aux collisions (il est difficile de trouver des messages
+  produisant un même hachage). Les MAC sont des fonctions à clef qui
+  (typiquement) doit fournir des messages infalsifiables -- une
+  propriété très différente. De plus, cette propriété n'est garantie
+  que si la clef est secrète.  
+</blockquote>
+<p>
+  Faisons un exercice simple.
+</p>
+<p>
+  Les fonctions de hachage sont souvent utilisées pour vérifier du code.
+  Ce petit bout de Javascript (retour à la ligne compris) :
+</p>
+<pre>alert('MZA who was that?');</pre>
+<p>
+  Produit en hachage
+  <i>296b8d7cb78a243dda4d0a61d33bbdd1</i>
+  sous CBC-MAC avec la clef 
+  <i>"YELLOW SUBMARINE"</i>
+  et un IV réglé sur 0.
+</p>
+<p>
+  Produisez un bout de Javascript valide qui affiche pour message
+  "Ayo, the Wu is back!" et produit un hachage avec exactement la même
+  valeur. Vérifiez dans un navigateur que votre bout de Javascript
+  fonctionne parfaitement.
+</p>
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">Points supplémentaires</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      Ecrivez du code Javascript qui télécharge votre fichier,
+      vérifie son CBC-MAC et l'insère dans le DOM si et seulement si
+      le hachage est celui attendu.
+    </p>
+  </div>
+</div>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>

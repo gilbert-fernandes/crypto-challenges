@@ -1,0 +1,157 @@
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta content="Thomas Ptacek, Sean Devlin, and Alex Balducci" name="author">
+    <title>Epreuve 54 Jeu 7 - Epreuves cryptographiques des Cryptopals</title>
+    <link href="Challenge%2054%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/bootstrap.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2054%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/app.css" media="all" rel="stylesheet" type="text/css">
+    <link href="Challenge%2054%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/fonts.htm" rel="stylesheet" type="text/css">
+    <link href="Challenge%2054%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.css" rel="stylesheet" type="text/css">
+    <script src="Challenge%2054%20Set%207%20-%20The%20Cryptopals%20Crypto%20Challenges_files/prism.js"></script>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="https://cryptopals.com/">Epreuves cryptographiques Cryptopals</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb">
+            <li>
+              <a href="https://cryptopals.com/">Epreuves</a>
+            </li>
+            <li>
+              <a href="https://cryptopals.com/sets/7">Jeu 7</a>
+            </li>
+            <li class="active">
+              <a href="https://cryptopals.com/sets/7/challenges/54">Epreuve 54</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <h3>Attaque Nostradamus de Kelsey et Kohno</h3>
+          <p>
+  Les fonctions de hachage sont parfois utilisées comme preuve
+  de prédiction d'un secret.
+</p>
+<p>
+  Par exemple, supposons que vous voulez prédire le score de tous
+  les match des équipes majeures de Baseball pour une saison donnée
+  (il y en a 2430 au total). Vous pourriez être inquiet(e) car
+  publier vos prédictions pourrait altérer les résultats.
+</p>
+<p>
+  Donc au lieu de publier tous les scores que vous avez prévu,
+  vous réalisez un hachage du document et vous publiez ce dernier.
+  Lorsque la saison est terminée, vous publiez le document dont
+  tout le monde peut vérifier le hachage, et vous pourrez démontrer
+  au monde que vous êtes le nouveau Michel de nostre Dame.
+</p>
+<p>
+  Mais comment faire s'il n'est pas possible de prédire avec précision
+  le résultat des 2400 rencontres ? N'ayez pas peur : falsifier une
+  prédiction dans ce cadre revient à réaliser une attaque par
+  seconde pré-image.
+</p>
+<p>
+  Nous pouvons appliquer l'attaque sur long message, comme pour l'exercice
+  précédent, mais cela pourrait sembler suspect. Qui va vous faire
+  confiance si votre message à hacher pèse... plus de 2^50 octets de long ?
+</p>
+<p>
+  Il s'avère qu'il est possible de monter une attaque, avec succès,
+  avec un suffixe bien plus court. Avec cette méthode :
+</p>
+<ol>
+  <li>
+    Générez un grand nombre d'états initiaux de hachage. Disons 2^k.
+  </li>
+  <li>
+    Combinez des états initiaux par paires et générez des collisions
+    ne reposant que sur des blocs individuels. Vous disposez maintenant
+    de 2^k états d'hachage produisant des collisions vers 2^(k-1) états.
+  </li>
+  <li>
+    Répétez ce processus. Rassemblez par paires les 2^(k-1) états
+    et générez des collisions. Vous disposez maintenatn de 2^(k-2) états.
+  </li>
+  <li>
+    Continuez jusqu'à n'avoir qu'un seul état. Ceci forme votre
+    prédiction.
+  </li>
+  <li>
+    Enfin, à peu près. Vous allez devoir consacrer une certaine
+    longueur pour coder le remplissage. Assurez-vous que cette taille
+    est suffisante pour contenir votre message, le suffixe et un peu
+    d'espace "de glu" pour combiner le tout. Hachez ce bloc en utilisant
+    l'état à l'étape 4 - CECI est votre prédiction.
+  </li>
+</ol>
+<p>
+  Que venez-vous de créer ? Basiquement, c'est un entonoir qui fait
+  se corresondre de nombreux états initiaux vers un état commun final.
+  Ce qui est important c'est de disposer d'un champ large de 2^k états
+  où nous pouvons rechercher des collisions, mais le suffixe n'aura pas
+  besoin de faire plus que k+1 blocs de longueur.
+</p>
+<p>
+  La suite est triviale :
+</p>
+<ol>
+  <li>
+    Attendez la fin de la saison de Baseball (ce qui pourrait prendre
+    un peu de temps).
+  </li>
+  <li>
+    Ecrivez les résultats des jeux. Ou de tout aure chose, je ne suis
+    pas exigeant.
+  </li>
+  <li>
+    Générez assez de blocs de "glu" pour avoir un message de la bonne
+    taille. Le dernier bloc doit produire une collision dans l'une
+    des feuilles de votre arbre.
+  </li>
+  <li>
+    Suivez le chemin qui part de cette feuille et remontez jusqu'à
+    le noeud racine et construisez votre suffixe en combinant
+    tous les blocs de message sur ce chemin.
+  </li>
+</ol>
+<p>
+  La difficulté est ici d'environ 2^(b-k). En augmentant ou réduisant
+  k dans la phase de génération de l'arbre, vous pouvez moduler la
+  difficulté de cette étape. Et il est préférable de consacrer vos
+  ressources à cette étape car tout le monde va vouloir rapidement
+  votre document dès la fin du dernier match. Bonnes prévisions !
+</p>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Services cryptographiques</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  
+  <script>
+    /*var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-68682-6']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</body></html>
