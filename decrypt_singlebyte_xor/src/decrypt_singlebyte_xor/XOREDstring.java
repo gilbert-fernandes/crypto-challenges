@@ -1,5 +1,12 @@
 package decrypt_singlebyte_xor;
 
+/*
+ * XOREDstring.java
+ * /decrypt_singlebyte_xor/src/decrypt_singlebyte_xor/XOREDstring.java
+ * Public domain - free to use
+ * 
+ */
+
 public class XOREDstring {
 	
 	private int bestScore;

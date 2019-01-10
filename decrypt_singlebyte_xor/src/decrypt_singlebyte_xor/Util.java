@@ -1,5 +1,12 @@
 package decrypt_singlebyte_xor;
 
+/*
+ * Util.java
+ * /decrypt_singlebyte_xor/src/decrypt_singlebyte_xor/Util.java
+ * Public domain - free to use
+ * 
+ */
+
 import java.util.List;
 
 public class Util {
