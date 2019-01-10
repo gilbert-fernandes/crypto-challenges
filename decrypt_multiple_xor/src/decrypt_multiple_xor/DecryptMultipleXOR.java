@@ -12,7 +12,6 @@ package decrypt_multiple_xor;
 public class DecryptMultipleXOR {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		
 		/*
 		 * 1. Let KEYSIZE be the guessed length of the key; try values from 2 to (say) 40.
