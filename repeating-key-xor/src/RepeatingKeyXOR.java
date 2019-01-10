@@ -11,6 +11,8 @@ public class RepeatingKeyXOR {
 
 	public static void main(String[] args) {
 		System.out.println("repeating key xor (using key \"ICE\")");
+		System.out.println("public domain - gilbert.fernandes@orange.fr");
+		System.out.println("sources @ https://github.com/gilbert-fernandes/");
 		if(args.length == 0) {
 			System.out.println("usage : rkXOR [filename]");
 			return;
