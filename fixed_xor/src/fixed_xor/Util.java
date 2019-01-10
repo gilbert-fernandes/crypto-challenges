@@ -8,6 +8,10 @@ package fixed_xor;
  */
 
 public class Util {
+	
+	Util() {
+		// constructor
+	}
 
 	public static void argcheck(final int nb) {
 		
