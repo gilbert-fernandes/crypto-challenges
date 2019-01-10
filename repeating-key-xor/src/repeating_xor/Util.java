@@ -1,4 +1,5 @@
 package repeating_xor;
+
 /*
  * Util.java
  * /repeating-key-xor/src/Util.java
@@ -14,6 +15,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Util {
+	
+	static final byte[] XOR_KEY_BYTES = RepeatingKeyXOR.XOR_KEY.getBytes();
 	
 	Util() {
 		// constructor
@@ -74,6 +77,32 @@ public class Util {
 	        sb.append(String.format("%02x", b)); // use X for uppercase
 	    }
 	    return sb.toString();
+	}
+	
+	static byte[] rkXOR(byte[] content) {
+		
+		short currentByteKey = 0;
+		
+		for(int i = 0; i<content.length; i++) {
+			
+			/*
+			 * next lines used during development because I hate tracing execution from within eclipse...
+			 * final String toBeConverted = String.format("%02x ", content[i]);
+			 * final String onceConvered = String.format("%02x ", (byte)((int) content[i] ^ (int) XOR_KEY[currentByteKey]));
+			 * System.out.println(i+1 + " : " + toBeConverted + " -" + currentByteKey + "-> " + onceConvered);
+			 */	
+			
+			content[i] = (byte)((int) content[i] ^ (int) XOR_KEY_BYTES[currentByteKey]);
+			currentByteKey = incrementByteKey(currentByteKey);
+		}
+		
+		return content;
+		
+	}
+	
+	// loop from 0 to (XOR_KEY-1) values
+	private static short incrementByteKey(short currentByteKey) {
+		return (++currentByteKey > XOR_KEY_BYTES.length-1) ? 0 : currentByteKey;
 	}
 
 }
