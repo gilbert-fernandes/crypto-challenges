@@ -43,8 +43,8 @@ public class XOREDstring {
 	    if ((encoded.length() % 2) != 0)
 	        throw new IllegalArgumentException("input string has an odd number of characters");
 
-	    final byte result[] = new byte[encoded.length()/2];
-	    final char    enc[] = encoded.toCharArray();
+	    final byte[] result = new byte[encoded.length()/2];
+	    final char[]    enc = encoded.toCharArray();
 	    
 	    for (int i = 0; i < enc.length; i += 2) {
 	        StringBuilder sb = new StringBuilder(2);
@@ -135,7 +135,7 @@ public class XOREDstring {
 			byte[] decodeAttempt = new byte[hexDecoded.length];
 			
 			for(int i=0; i<=hexDecoded.length-1; i++)
-				decodeAttempt[i] = (byte)((int) hexDecoded[i] ^ (int) key);
+				decodeAttempt[i] = (byte)((int) hexDecoded[i] ^ key);
 			
 			int score = scoreValue(decodeAttempt);
 			
@@ -295,6 +295,10 @@ public class XOREDstring {
 					score += frequencies.Z.ordinal();
 					break;
 					
+				default :
+					System.out.print("warning : unexpected value in switch : " + (int)(buffer[i]));
+					break;
+					
 			}
 		}
 		
@@ -441,6 +445,10 @@ public class XOREDstring {
 					bestFreqPerLetter[frequencies.Z.ordinal()]++;
 					break;
 					
+				default :
+					System.out.print("Warning : found unexpected char in switch : " + Character.toUpperCase(decodedChars[i]));
+					break;
+					
 			}
 		}
 		
@@ -464,7 +472,7 @@ public class XOREDstring {
 		byte[] bestDecode = new byte[hexDecoded.length];
 		
 		for(int i=0; i<=hexDecoded.length-1; i++)
-			bestDecode[i] = (byte)((int)(hexDecoded[i]) ^ (int)(bestKey));
+			bestDecode[i] = (byte)((int)(hexDecoded[i]) ^ bestKey);
 		
 		return new String(bestDecode);
 		
