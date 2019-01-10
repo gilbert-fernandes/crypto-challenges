@@ -11,6 +11,10 @@ import java.util.List;
 
 public class Util {
 	
+	Util() {
+		// constructor
+	}
+	
 	// ---- checkArg ------------------------------------------------------------------------------
 
 	public static void checkArg(final String[] args, List<String> encodedStrings) {
