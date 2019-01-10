@@ -1,3 +1,5 @@
+package repeating_xor;
+
 /*
  * RepeatingKeyXOR.java
  * /repeating-key-xor/src/RepeatingKeyXOR.java
