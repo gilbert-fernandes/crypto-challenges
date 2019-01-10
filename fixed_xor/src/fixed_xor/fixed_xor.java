@@ -1,5 +1,12 @@
 package fixed_xor;
 
+/*
+ * fixed_xor.java
+ * /fixed_xor/src/fixed_xor/fixed_xor.java
+ * Public domain - free to use
+ * 
+ */
+
 public class fixed_xor {
 
 	public static void main(String[] args) {

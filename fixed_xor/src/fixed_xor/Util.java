@@ -1,5 +1,12 @@
 package fixed_xor;
 
+/*
+ * Util.java
+ * /fixed_xor/src/fixed_xor/Util.java
+ * Public domain - free to use
+ * 
+ */
+
 public class Util {
 
 	public static void argcheck(final int nb) {

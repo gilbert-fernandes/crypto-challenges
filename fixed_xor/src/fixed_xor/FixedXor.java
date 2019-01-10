@@ -1,5 +1,12 @@
 package fixed_xor;
 
+/*
+ * FixedXor.java
+ * /fixed_xor/src/fixed_xor/FixedXor.java
+ * Public domain - free to use
+ * 
+ */
+
 public class FixedXor {
 	
 	final private byte[] firstValue;
