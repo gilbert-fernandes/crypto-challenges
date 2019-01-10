@@ -14,7 +14,7 @@ public class decrypt_singlebyte_xor {
 
 	public static void main(String[] args) {
 		
-		List<String> encodedStrings = new ArrayList<String>();
+		List<String> encodedStrings = new ArrayList<>();
 		Util.checkArg(args, encodedStrings);
 		
 		for(String s : encodedStrings) {
