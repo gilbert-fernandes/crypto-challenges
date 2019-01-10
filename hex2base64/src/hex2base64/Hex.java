@@ -1,5 +1,12 @@
 package hex2base64;
 
+/*
+ * Hex.java
+ * /hex2base64/src/hex2base64/Hex.java
+ * Public domain - free to use
+ * 
+ */
+
 import java.util.Base64;
 
 public class Hex {

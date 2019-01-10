@@ -1,5 +1,12 @@
 package hex2base64;
 
+/*
+ * Hex2base64.java
+ * /hex2base64/src/hex2base64/Hex2base64.java
+ * Public domain - free to use
+ * 
+ */
+
 public class Hex2base64 {
 
 	public static void main(String[] args) {
